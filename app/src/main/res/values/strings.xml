@@ -1,3 +1,26 @@
 <resources>
     <string name="app_name">QuickCare</string>
+
+
+
+    <string-array name="Insurance">
+        <item>Any Insurance</item>
+        <item>Aetna</item>
+        <item>Cigna</item>
+        <item>Humana</item>
+        <item>United Health</item>
+    </string-array>
+    <string-array name="rating">
+        <item>⭐ and up</item>
+        <item>⭐⭐ and up</item>
+        <item>⭐⭐⭐ and up</item>
+        <item>⭐⭐⭐⭐ and up</item>
+    </string-array>
+
+    <string-array name="typeofcare">
+        <item>Any type of provider</item>
+        <item>doctors</item>
+        <item>hospitals</item>
+        <item>sketchy coke dealers</item>
+    </string-array>
 </resources>

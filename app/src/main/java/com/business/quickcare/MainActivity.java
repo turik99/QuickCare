@@ -2,6 +2,7 @@ package com.business.quickcare;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,6 +21,14 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    }
+
+
+
+    public void findProviders(View view)
+    {
+        //This method is called when the user clicks the find providers button, it's defined in the
+        //android:onclick attribute of the xml.
 
 
     }

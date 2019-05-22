@@ -1,5 +1,6 @@
 package com.business.quickcare;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -30,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
         //This method is called when the user clicks the find providers button, it's defined in the
         //android:onclick attribute of the xml.
 
+        Intent intent = new Intent(this, ProviderResultsActivity.class);
+        startActivity(intent);
 
     }
 }

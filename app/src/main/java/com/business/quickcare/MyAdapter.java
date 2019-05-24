@@ -1,6 +1,8 @@
 package com.business.quickcare;
 
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -13,10 +15,22 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     // you provide access to all the views for a data item in a view holder
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
+
+
+        public CardView cardView;
+        public TextView providerName;
+        public TextView ratingText;
+        public TextView location;
         public TextView textView;
-        public MyViewHolder(TextView v) {
+
+        public MyViewHolder(TextView v, CardView cardView1, TextView providerName1, TextView ratingText1, TextView location1) {
             super(v);
             textView = v;
+            cardView = cardView1;
+            providerName = providerName1;
+            ratingText = ratingText1;
+            location = location1;
+
         }
     }
 
@@ -32,7 +46,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         // create a new view
         TextView v = (TextView) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.example_item, parent, false);
-        MyViewHolder vh = new MyViewHolder(v);
+        TextView providerName = parent.getView
+        MyViewHolder vh = new MyViewHolder(v, );
         return vh;
     }
 

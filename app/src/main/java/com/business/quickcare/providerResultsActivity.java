@@ -13,6 +13,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+
 public class ProviderResultsActivity extends AppCompatActivity {
 
     private RecyclerView.Adapter mAdapter;
@@ -34,6 +36,13 @@ public class ProviderResultsActivity extends AppCompatActivity {
         //Remember that we will eventually need to be sorting this data w/ ui elements like the spinners
         //and also sorting the data by location naturally
 
+
+
+        //This is instantiating an arraylist of the quickareprovider class, see that class for details on what data is stored here.
+        final ArrayList<QuickCareProvider> listOfProviders = new ArrayList<>(10);
+
+
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("healthcareproviders")
                 .get()
@@ -45,6 +54,9 @@ public class ProviderResultsActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
+                                listOfProviders.add(new QuickCareProvider(document.getString("name"),
+                                        String.valueOf(document.get("ZipCode")),
+                                        document.getString("rating")));
                             }
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
@@ -52,6 +64,7 @@ public class ProviderResultsActivity extends AppCompatActivity {
                     }
                 });
 
+        Log.v("ProviderDataSetTest", listOfProviders.toString());
 
 
 

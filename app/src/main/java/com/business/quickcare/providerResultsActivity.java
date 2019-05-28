@@ -26,12 +26,6 @@ public class ProviderResultsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_provider_results);
 
 
-
-
-
-
-
-
         //Before we starting messing with the UI elements like the recycler view and stuff, we're going to get the Firebase data
         //Remember that we will eventually need to be sorting this data w/ ui elements like the spinners
         //and also sorting the data by location naturally
@@ -61,8 +55,28 @@ public class ProviderResultsActivity extends AppCompatActivity {
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
                         }
+
+
+
+                        //Instantiating a recyclerview, which is really a list view. The following code is mostly
+                        //boiler plate from the Android Developers website.
+                        RecyclerView providerList = findViewById(R.id.providerList);
+
+                        // use this setting to improve performance if you know that changes
+                        // in content do not change the layout size of the RecyclerView
+                        providerList.setHasFixedSize(true);
+
+                        // use a linear layout manager
+                        layoutManager = new LinearLayoutManager(getApplicationContext());
+                        providerList.setLayoutManager(layoutManager);
+
+                        // specify an adapter (see also next example)
+                        mAdapter = new MyAdapter(listOfProviders);
+                        providerList.setAdapter(mAdapter);
+
                     }
                 });
+
 
         Log.v("ProviderDataSetTest", listOfProviders.toString());
 
@@ -84,21 +98,6 @@ public class ProviderResultsActivity extends AppCompatActivity {
 
 
 
-        //Instantiating a recyclerview, which is really a list view. The following code is mostly
-        //boiler plate from the Android Developers website.
-        RecyclerView providerList = findViewById(R.id.providerList);
-
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        providerList.setHasFixedSize(true);
-
-        // use a linear layout manager
-        layoutManager = new LinearLayoutManager(this);
-        providerList.setLayoutManager(layoutManager);
-
-        // specify an adapter (see also next example)
-        mAdapter = new MyAdapter(myDataset);
-        providerList.setAdapter(mAdapter);
 
     }
 }

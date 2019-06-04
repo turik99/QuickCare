@@ -9,7 +9,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ProviderResultsActivity"></activity>
+        <activity
+            android:name=".ProviderPageActivity"
+            android:label="@string/title_activity_provider_page"
+            android:parentActivityName=".ProviderResultsActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.business.quickcare.ProviderResultsActivity" />
+        </activity>
+        <activity android:name=".ProviderResultsActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

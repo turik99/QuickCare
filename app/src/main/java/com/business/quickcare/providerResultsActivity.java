@@ -3,9 +3,14 @@ package com.business.quickcare;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -34,6 +39,13 @@ public class ProviderResultsActivity extends AppCompatActivity {
 
         //This is instantiating an arraylist of the quickareprovider class, see that class for details on what data is stored here.
         final ArrayList<QuickCareProvider> listOfProviders = new ArrayList<>(10);
+
+
+        //this is handling a button that will expand and contract a filter menu at the top of the page.
+        ImageButton collapseFilter = findViewById(R.id.collapseFilter);
+
+
+
 
 
 
@@ -79,24 +91,6 @@ public class ProviderResultsActivity extends AppCompatActivity {
 
 
         Log.v("ProviderDataSetTest", listOfProviders.toString());
-
-
-
-
-
-
-
-
-        String[] myDataset = {"Advocate", "Eric Hospitals", "Riley Hospitals", "Dylan Hospitals",
-                "Advocate", "Eric Hospitals", "Riley Hospitals", "Dylan Hospitals",
-                "Advocate", "Eric Hospitals", "Riley Hospitals", "Dylan Hospitals",
-                "Advocate", "Eric Hospitals", "Riley Hospitals", "Dylan Hospitals",
-                "Advocate", "Eric Hospitals", "Riley Hospitals", "Dylan Hospitals",
-                "Advocate", "Eric Hospitals", "Riley Hospitals", "Dylan Hospitals",
-                "Advocate", "Eric Hospitals", "Riley Hospitals", "Dylan Hospitals",
-                "Advocate", "Eric Hospitals", "Riley Hospitals", "Dylan Hospitals",};
-
-
 
 
     }

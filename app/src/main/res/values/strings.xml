@@ -2,7 +2,6 @@
     <string name="app_name">QuickCare</string>
 
 
-
     <string-array name="Insurance">
         <item>Any Insurance</item>
         <item>Aetna</item>
@@ -23,4 +22,5 @@
         <item>hospitals</item>
         <item>sketchy coke dealers</item>
     </string-array>
+    <string name="title_activity_provider_page">ProviderPageActivity</string>
 </resources>

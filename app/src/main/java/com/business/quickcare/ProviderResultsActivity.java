@@ -42,7 +42,7 @@ public class ProviderResultsActivity extends AppCompatActivity {
 
 
         //this is handling a button that will expand and contract a filter menu at the top of the page.
-        ImageButton collapseFilter = findViewById(R.id.collapseFilter);
+        ImageButton collapseFilter = findViewById(R.id.filterCardExpandable);
 
 
 
@@ -91,7 +91,6 @@ public class ProviderResultsActivity extends AppCompatActivity {
 
 
         Log.v("ProviderDataSetTest", listOfProviders.toString());
-
 
     }
 }

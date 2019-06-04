@@ -86,18 +86,5 @@ public class ProviderResultsActivity extends AppCompatActivity {
 
 
 
-
-        String[] myDataset = {"Advocate", "Eric Hospitals", "Riley Hospitals", "Dylan Hospitals",
-                "Advocate", "Eric Hospitals", "Riley Hospitals", "Dylan Hospitals",
-                "Advocate", "Eric Hospitals", "Riley Hospitals", "Dylan Hospitals",
-                "Advocate", "Eric Hospitals", "Riley Hospitals", "Dylan Hospitals",
-                "Advocate", "Eric Hospitals", "Riley Hospitals", "Dylan Hospitals",
-                "Advocate", "Eric Hospitals", "Riley Hospitals", "Dylan Hospitals",
-                "Advocate", "Eric Hospitals", "Riley Hospitals", "Dylan Hospitals",
-                "Advocate", "Eric Hospitals", "Riley Hospitals", "Dylan Hospitals",};
-
-
-
-
     }
 }

@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -62,7 +63,7 @@ public class ProviderResultsActivity extends AppCompatActivity {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 listOfProviders.add(new QuickCareProvider(document.getString("name"),
                                         String.valueOf(document.get("ZipCode")),
-                                        document.getString("rating")));
+                                        document.getString("rating"), document.getId()));
                             }
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
@@ -86,6 +87,7 @@ public class ProviderResultsActivity extends AppCompatActivity {
                         mAdapter = new MyAdapter(listOfProviders);
                         providerList.setAdapter(mAdapter);
 
+                        providerList.addOnItemTouchListener(new RecyclerView.SimpleOnItemTouchListener());
                     }
                 });
 

@@ -5,7 +5,8 @@ public class QuickCareProvider {
     private String name;
     private String location;
     private String rating;
-    public QuickCareProvider (String name, String location, String rating)
+    private String id;
+    public QuickCareProvider (String name, String location, String rating, String id)
     {
         this.name = name;
         this.location = location;

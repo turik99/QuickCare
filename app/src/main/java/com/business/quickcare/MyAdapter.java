@@ -13,7 +13,6 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
-    private String[] mDataset;
 
     private ArrayList<QuickCareProvider> providerDataSet;
 
@@ -76,6 +75,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         holder.location.setText(providerDataSet.get(position).getLocation());
 
 
+
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -84,4 +84,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         Log.v("providerDataSet count", String.valueOf(providerDataSet.size()));
         return providerDataSet.size();
     }
+
+
 }

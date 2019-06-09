@@ -17,20 +17,20 @@
         app:layout_constraintTop_toBottomOf="@+id/filterCardExpandable" />
 
     <com.alespero.expandablecardview.ExpandableCardView
-        app:title="Filter"
-        app:inner_view="@layout/innerlayout"
-        android:animateLayoutChanges="true"
-        android:backgroundTint="#E2E2E2"
         android:id="@+id/filterCardExpandable"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:animateLayoutChanges="true"
+        android:backgroundTint="#E2E2E2"
         app:expandOnClick="true"
-        android:layout_marginEnd="0dp"
+        app:inner_view="@layout/innerlayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="Sort">
 
 
     </com.alespero.expandablecardview.ExpandableCardView>

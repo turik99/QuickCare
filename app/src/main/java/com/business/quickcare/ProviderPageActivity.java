@@ -9,6 +9,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ProviderPageActivity extends AppCompatActivity {
 
+    private String documentId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -16,11 +17,13 @@ public class ProviderPageActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        this.documentId = getIntent().getStringExtra("documentId");
+
+
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-
 
 
     }

@@ -11,6 +11,7 @@ public class QuickCareProvider {
         this.name = name;
         this.location = location;
         this.rating = rating;
+        this.id = id;
 
     }
     public String getName()
@@ -25,6 +26,7 @@ public class QuickCareProvider {
     {
         return this.rating;
     }
+    public String getId(){return this.id;}
     public void setName(String name)
     {
         this.name = name;
@@ -37,6 +39,7 @@ public class QuickCareProvider {
     {
         this.rating = rating;
     }
+    public void setId(String id){this.id = id;}
 
 
 

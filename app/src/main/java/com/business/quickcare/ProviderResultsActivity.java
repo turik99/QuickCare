@@ -42,14 +42,6 @@ public class ProviderResultsActivity extends AppCompatActivity {
         final ArrayList<QuickCareProvider> listOfProviders = new ArrayList<>(10);
 
 
-        //this is handling a button that will expand and contract a filter menu at the top of the page.
-        ImageButton collapseFilter = findViewById(R.id.filterCardExpandable);
-
-
-
-
-
-
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("healthcareproviders")
                 .get()
@@ -84,10 +76,11 @@ public class ProviderResultsActivity extends AppCompatActivity {
                         providerList.setLayoutManager(layoutManager);
 
                         // specify an adapter (see also next example)
-                        mAdapter = new MyAdapter(listOfProviders);
+                        mAdapter = new MyAdapter(listOfProviders, ProviderResultsActivity.this);
                         providerList.setAdapter(mAdapter);
 
-                        providerList.addOnItemTouchListener(new RecyclerView.SimpleOnItemTouchListener());
+
+
                     }
                 });
 

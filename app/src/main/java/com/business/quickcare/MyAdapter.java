@@ -1,5 +1,7 @@
 package com.business.quickcare;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
@@ -15,7 +17,7 @@ import java.util.ArrayList;
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     private ArrayList<QuickCareProvider> providerDataSet;
-
+    private Context context;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -28,6 +30,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         public TextView providerName;
         public TextView ratingText;
         public TextView location;
+
         public View view;
 
         public MyViewHolder(View v, CardView cardView1, TextView providerName1, TextView ratingText1, TextView location1) {
@@ -42,7 +45,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter(ArrayList<QuickCareProvider> providerList) {
+    public MyAdapter(ArrayList<QuickCareProvider> providerList, Context ctx) {
+        this.context = ctx;
         providerDataSet = providerList;
     }
 
@@ -65,7 +69,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
 
@@ -75,6 +79,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         holder.location.setText(providerDataSet.get(position).getLocation());
 
 
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, ProviderPageActivity.class);
+                intent.putExtra("documentId", providerDataSet.get(position).getId());
+                context.startActivity(intent);
+            }
+        });
 
     }
 

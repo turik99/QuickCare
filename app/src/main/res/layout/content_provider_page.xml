@@ -83,7 +83,7 @@
                 android:text="Common Operations:"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/yearsOperatingDetails" />
+                app:layout_constraintTop_toBottomOf="@+id/ratingDetailsText" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/priceListDetails"
@@ -98,16 +98,6 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView9" />
-
-            <TextView
-                android:id="@+id/yearsOperatingDetails"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:text="Operating for 5 years"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ratingDetailsText" />
 
             <TextView
                 android:id="@+id/practiceSummaryDetails"

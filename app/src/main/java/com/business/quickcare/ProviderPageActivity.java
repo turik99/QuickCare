@@ -32,7 +32,6 @@ public class ProviderPageActivity extends AppCompatActivity {
         final TextView providerDetailsAddress = findViewById(R.id.providerDetailsAddress);
         final TextView practiceSummaryDetails = findViewById(R.id.practiceSummaryDetails);
         final TextView ratingDetailsText = findViewById(R.id.ratingDetailsText);
-        final TextView operatingTime = findViewById(R.id.yearsOperatingDetails);
         final TextView pricingSummary = findViewById(R.id.priceSummary);
 
 
@@ -49,6 +48,9 @@ public class ProviderPageActivity extends AppCompatActivity {
                         Log.d("HP Page Firebase", "DocumentSnapshot data: " + document.getData());
                         providerDetailsName.setText(document.getString("name"));
                         ratingDetailsText.setText(document.getString("rating"));
+                        providerDetailsAddress.setText(document.getString("address"));
+                        practiceSummaryDetails.setText(document.getString("summary"));
+                        pricingSummary.setText(document.getString("priceskew"));
                     } else {
                         Log.d("HP Page Firebase", "No such document");
                     }

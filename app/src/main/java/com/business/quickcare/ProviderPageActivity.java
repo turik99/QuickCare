@@ -22,7 +22,7 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
 
     private String documentId;
     GoogleMap map;
-
+    MapView mapView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +39,7 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
         final TextView ratingDetailsText = findViewById(R.id.ratingDetailsText);
         final TextView pricingSummary = findViewById(R.id.priceSummary);
 
-        final MapView mapView = findViewById(R.id.mapView);
+        mapView = findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
@@ -61,8 +61,11 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
                         providerDetailsAddress.setText(address);
                         practiceSummaryDetails.setText(document.getString("summary"));
                         pricingSummary.setText(document.getString("priceskew"));
+
+                        mapView.onStart();
                         GeoCoder geoCoder = new GeoCoder(address);
                         geoCoder.execute();
+
 
                     } else {
                         Log.d("HP Page Firebase", "No such document");
@@ -84,4 +87,30 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
     public void onMapReady(GoogleMap googleMap) {
 
     }
+    @Override
+    public void onResume() {
+        mapView.onResume();
+        super.onResume();
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mapView.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
+    }
+
+
 }

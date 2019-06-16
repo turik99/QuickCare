@@ -8,6 +8,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
@@ -15,9 +18,11 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.model.Document;
 
-public class ProviderPageActivity extends AppCompatActivity {
+public class ProviderPageActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private String documentId;
+    GoogleMap map;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +39,10 @@ public class ProviderPageActivity extends AppCompatActivity {
         final TextView ratingDetailsText = findViewById(R.id.ratingDetailsText);
         final TextView pricingSummary = findViewById(R.id.priceSummary);
 
+        final MapView mapView = findViewById(R.id.mapView);
+        mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync(this);
+
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -48,9 +57,13 @@ public class ProviderPageActivity extends AppCompatActivity {
                         Log.d("HP Page Firebase", "DocumentSnapshot data: " + document.getData());
                         providerDetailsName.setText(document.getString("name"));
                         ratingDetailsText.setText(document.getString("rating"));
-                        providerDetailsAddress.setText(document.getString("address"));
+                        String address = document.getString("address");
+                        providerDetailsAddress.setText(address);
                         practiceSummaryDetails.setText(document.getString("summary"));
                         pricingSummary.setText(document.getString("priceskew"));
+                        GeoCoder geoCoder = new GeoCoder(address);
+                        geoCoder.execute();
+
                     } else {
                         Log.d("HP Page Firebase", "No such document");
                     }
@@ -61,6 +74,14 @@ public class ProviderPageActivity extends AppCompatActivity {
         });
 
 
+
+
+
+
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
+    }
 }

@@ -14,16 +14,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:src="@drawable/chevron_up"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <TextView
                 android:id="@+id/priceSummary"
                 android:layout_width="wrap_content"
@@ -40,11 +30,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:text="718 W James M Rochford Street, Chicago Illinois"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/imageView"
+                app:layout_constraintStart_toEndOf="@+id/mapView"
                 app:layout_constraintTop_toBottomOf="@+id/providerDetailsName" />
 
             <TextView
@@ -60,8 +50,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/imageView"
+                app:layout_constraintStart_toEndOf="@+id/mapView"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -110,7 +99,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/providerDetailsAddress" />
+                app:layout_constraintTop_toBottomOf="@+id/mapView" />
+
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/mapView"
+                android:layout_width="128dp"
+                android:layout_height="128dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
         </android.support.constraint.ConstraintLayout>

@@ -40,7 +40,7 @@ public class GeoCoder extends AsyncTask<String, String, String> {
             jsonObject = jsonObject.getJSONObject("location");
             latLongArray[0] = String.valueOf(jsonObject.get("lat"));
             latLongArray[1] = String.valueOf(jsonObject.get("long"));
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }

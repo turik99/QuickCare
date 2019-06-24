@@ -54,7 +54,7 @@ public class ProviderResultsActivity extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 listOfProviders.add(new QuickCareProvider(document.getString("name"),
-                                        String.valueOf(document.get("ZipCode")),
+                                        String.valueOf(document.get("address")),
                                         document.getString("rating"), document.getId()));
                             }
                         } else {

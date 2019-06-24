@@ -61,10 +61,11 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
                         providerDetailsAddress.setText(address);
                         practiceSummaryDetails.setText(document.getString("summary"));
                         pricingSummary.setText(document.getString("priceskew"));
-
                         mapView.onStart();
-                        GeoCoder geoCoder = new GeoCoder(address);
+                        GeoCoder geoCoder = new GeoCoder(address, map);
+
                         geoCoder.execute();
+
 
 
                     } else {
@@ -85,7 +86,7 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
+        map = googleMap;
     }
     @Override
     public void onResume() {
@@ -96,20 +97,20 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
 
     @Override
     public void onPause() {
-        super.onPause();
         mapView.onPause();
+        super.onPause();
     }
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         mapView.onDestroy();
+        super.onDestroy();
     }
 
     @Override
     public void onLowMemory() {
-        super.onLowMemory();
         mapView.onLowMemory();
+        super.onLowMemory();
     }
 
 

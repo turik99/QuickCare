@@ -1,7 +1,12 @@
 package com.business.quickcare;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -21,10 +26,14 @@ public class GeoCoder extends AsyncTask<String, String, String> {
     private String returnData = "notfilled";
     private String[] latLongArray = new String[2];
     private GoogleMap map;
-    public GeoCoder(String address, GoogleMap googleMap)
+    private Button getDirectionsButton;
+    private Context ctx;
+    public GeoCoder(Context context, String address, GoogleMap googleMap, Button button)
     {
+        this.ctx = context;
         this.address = address;
         map = googleMap;
+        this.getDirectionsButton = button;
     }
     @Override
     protected void onPreExecute() {
@@ -64,10 +73,28 @@ public class GeoCoder extends AsyncTask<String, String, String> {
     protected void onPostExecute(String s) {
 
         super.onPostExecute(s);
-        LatLng location = new LatLng(Double.valueOf(latLongArray[0]), Double.valueOf(latLongArray[1]));
+        final LatLng location = new LatLng(Double.valueOf(latLongArray[0]), Double.valueOf(latLongArray[1]));
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
         map.animateCamera(CameraUpdateFactory.zoomTo(16), 2000, null);
 
+
+        getDirectionsButton.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Create a Uri from an intent string. Use the result to create an Intent.
+                Uri gmmIntentUri = Uri.parse("geo:" + location.latitude + "," + location.longitude);
+
+                // Create an Intent from gmmIntentUri. Set the action to ACTION_VIEW
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                // Make the Intent explicit by setting the Google Maps package
+                mapIntent.setPackage("com.google.android.apps.maps");
+                mapIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                // Attempt to start an activity that can handle the Intent
+
+                ctx.startActivity(mapIntent);
+
+            }
+        });
 
     }
 }

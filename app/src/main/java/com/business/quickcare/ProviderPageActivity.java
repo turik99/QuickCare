@@ -1,12 +1,14 @@
 package com.business.quickcare;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -38,6 +40,8 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
         final TextView practiceSummaryDetails = findViewById(R.id.practiceSummaryDetails);
         final TextView ratingDetailsText = findViewById(R.id.ratingDetailsText);
         final TextView pricingSummary = findViewById(R.id.priceSummary);
+        final Button getDirButton = findViewById(R.id.getDirectionsButton);
+
 
         mapView = findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
@@ -47,7 +51,7 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference docRef = db.collection("healthcareproviders").document(documentId);
+        final DocumentReference docRef = db.collection("healthcareproviders").document(documentId);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -62,11 +66,8 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
                         practiceSummaryDetails.setText(document.getString("summary"));
                         pricingSummary.setText(document.getString("priceskew"));
                         mapView.onStart();
-                        GeoCoder geoCoder = new GeoCoder(address, map);
-
+                        GeoCoder geoCoder = new GeoCoder(getApplicationContext(), address, map, getDirButton);
                         geoCoder.execute();
-
-
 
                     } else {
                         Log.d("HP Page Firebase", "No such document");

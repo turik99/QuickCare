@@ -17,7 +17,8 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Spinner
-            android:paddingBottom="8dp"
+            android:layout_marginBottom="8dp"
+
             android:id="@+id/insuranceSpinner"
             android:layout_width="wrap_content"
             android:layout_height="36dp"

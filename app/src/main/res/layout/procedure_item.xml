@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/procedureIcon"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/chevron_up" />
+
+    <TextView
+        android:id="@+id/procedureName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Hip Replacement"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintStart_toEndOf="@+id/procedureIcon"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/procedureCost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="$16,000-$20,000"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        app:layout_constraintStart_toEndOf="@+id/procedureIcon"
+        app:layout_constraintTop_toBottomOf="@+id/procedureName" />
+
+    <ImageView
+        android:id="@+id/procedurePriceSkew"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        app:layout_constraintStart_toEndOf="@+id/procedureCost"
+        app:layout_constraintTop_toBottomOf="@+id/procedureName"
+        app:srcCompat="@drawable/cash_cheap" />
+
+    <TextView
+        android:id="@+id/procedurePriceMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:text="cheaper than average"
+        app:layout_constraintBottom_toBottomOf="@+id/procedureCost"
+        app:layout_constraintStart_toEndOf="@+id/procedurePriceSkew" />
+</androidx.constraintlayout.widget.ConstraintLayout>

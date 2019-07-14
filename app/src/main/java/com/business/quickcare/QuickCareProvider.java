@@ -1,17 +1,22 @@
 package com.business.quickcare;
 
+import com.google.firebase.firestore.GeoPoint;
+
 public class QuickCareProvider {
 
     private String name;
     private String location;
     private String rating;
     private String id;
-    public QuickCareProvider (String name, String location, String rating, String id)
+    private String[] coordinates = new String[2];
+    private GeoPoint geoPoint;
+    public QuickCareProvider (String name, String location, String rating, String id, String[] coordinates)
     {
         this.name = name;
         this.location = location;
         this.rating = rating;
         this.id = id;
+        this.coordinates = coordinates;
 
     }
     public String getName()
@@ -31,6 +36,11 @@ public class QuickCareProvider {
     {
         this.name = name;
     }
+
+    public String[] getCoordinates() {
+        return this.coordinates;
+    }
+
     public void setLocation(String location)
     {
         this.location = location;
@@ -40,6 +50,7 @@ public class QuickCareProvider {
         this.rating = rating;
     }
     public void setId(String id){this.id = id;}
+
 
 
 

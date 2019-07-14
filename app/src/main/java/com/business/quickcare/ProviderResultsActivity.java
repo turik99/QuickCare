@@ -15,9 +15,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import org.imperiumlabs.geofirestore.GeoFirestore;
+import org.imperiumlabs.geofirestore.GeoQuery;
+import org.imperiumlabs.geofirestore.listeners.GeoQueryDataEventListener;
+import org.imperiumlabs.geofirestore.listeners.GeoQueryEventListener;
 
 import java.util.ArrayList;
 
@@ -31,6 +39,8 @@ public class ProviderResultsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_provider_results);
 
+        double[] coordinates = getIntent().getDoubleArrayExtra("coordinates");
+
 
         //Before we starting messing with the UI elements like the recycler view and stuff, we're going to get the Firebase data
         //Remember that we will eventually need to be sorting this data w/ ui elements like the spinners
@@ -43,6 +53,48 @@ public class ProviderResultsActivity extends AppCompatActivity {
 
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference reference = db.collection("healthcareproviders");
+
+
+
+
+
+
+        GeoFirestore geoFirestore = new GeoFirestore(reference);
+        GeoQuery geoQuery = geoFirestore.queryAtLocation(new GeoPoint(coordinates[0], coordinates[1]), 0.6);
+        geoQuery.addGeoQueryDataEventListener(new GeoQueryDataEventListener() {
+            @Override
+            public void onDocumentEntered(DocumentSnapshot documentSnapshot, GeoPoint geoPoint) {
+
+            }
+
+            @Override
+            public void onDocumentExited(DocumentSnapshot documentSnapshot) {
+
+            }
+
+            @Override
+            public void onDocumentMoved(DocumentSnapshot documentSnapshot, GeoPoint geoPoint) {
+
+            }
+
+            @Override
+            public void onDocumentChanged(DocumentSnapshot documentSnapshot, GeoPoint geoPoint) {
+
+            }
+
+            @Override
+            public void onGeoQueryReady() {
+
+            }
+
+            @Override
+            public void onGeoQueryError(Exception e) {
+
+            }
+        });
+
+
         db.collection("healthcareproviders")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -52,10 +104,15 @@ public class ProviderResultsActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
+                                String[] coordinatesArray = new String[2];
+
                                 Log.d(TAG, document.getId() + " => " + document.getData());
+                                coordinatesArray[0] = document.getString("lat");
+                                coordinatesArray[1] = document.getString("lng");
                                 listOfProviders.add(new QuickCareProvider(document.getString("name"),
                                         String.valueOf(document.get("address")),
-                                        document.getString("rating"), document.getId()));
+                                        document.getString("rating"), document.getId(), coordinatesArray));
+
                             }
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
@@ -83,6 +140,10 @@ public class ProviderResultsActivity extends AppCompatActivity {
 
                     }
                 });
+
+
+
+
 
 
         Log.v("ProviderDataSetTest", listOfProviders.toString());

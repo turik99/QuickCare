@@ -18,7 +18,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.model.Document;
+
+import org.imperiumlabs.geofirestore.GeoFirestore;
 
 public class ProviderPageActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -65,9 +68,16 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
                         providerDetailsAddress.setText(address);
                         practiceSummaryDetails.setText(document.getString("summary"));
                         pricingSummary.setText(document.getString("priceskew"));
+
+                        double lat = Double.valueOf(document.getString("lat"));
+                        double lng = Double.valueOf(document.getString("lng"));
                         mapView.onStart();
                         GeoCoder geoCoder = new GeoCoder(getApplicationContext(), address, map, getDirButton);
                         geoCoder.execute();
+
+
+                        GeoFirestore geoFirestore = new GeoFirestore(db.collection("healthcareproviders"));
+                        geoFirestore.setLocation(documentId, new GeoPoint(lat, lng));
 
                     } else {
                         Log.d("HP Page Firebase", "No such document");
@@ -77,6 +87,7 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
                 }
             }
         });
+
 
 
 

@@ -114,8 +114,6 @@ public class ProviderResultsActivity extends AppCompatActivity {
                 }
 
 
-
-
                 //Instantiating a recyclerview, which is really a list view. The following code is mostly
                 //boiler plate from the Android Developers website.
                 RecyclerView providerList = findViewById(R.id.providerList);
@@ -144,6 +142,81 @@ public class ProviderResultsActivity extends AppCompatActivity {
 
 
         Log.v("ProviderDataSetTest", listOfProviders.toString());
+
+
+
+
+
+        /*Whoah THere Bucko! This code is only for testing! We're sorting by distance and stuff
+        now, so be sure to not have this around anymore soon.
+         */
+
+
+//        FirebaseFirestore dbTest = FirebaseFirestore.getInstance();
+//        db.collection("healthcareproviders")
+//                .get()
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    private String TAG = "FireBaseFireStore";
+//
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            for (QueryDocumentSnapshot document : task.getResult()) {
+//                                Log.d(TAG, document.getId() + " => " + document.getData());
+//                                listOfProviders.add(new QuickCareProvider(document.getString("name"),
+//                                        String.valueOf(document.get("ZipCode")),
+//                                        document.getString("rating"), document.getId(), new GeoPoint(-87.7346, 41.7218)));
+//                            }
+//                        } else {
+//                            Log.w(TAG, "Error getting documents.", task.getException());
+//                        }
+//
+//
+//
+//                        //Instantiating a recyclerview, which is really a list view. The following code is mostly
+//                        //boiler plate from the Android Developers website.
+//                        RecyclerView providerList = findViewById(R.id.providerList);
+//
+//                        // use this setting to improve performance if you know that changes
+//                        // in content do not change the layout size of the RecyclerView
+//                        providerList.setHasFixedSize(true);
+//
+//                        // use a linear layout manager
+//                        layoutManager = new LinearLayoutManager(getApplicationContext());
+//                        providerList.setLayoutManager(layoutManager);
+//
+//                        // specify an adapter (see also next example)
+//                        mAdapter = new MyAdapter(listOfProviders, ProviderResultsActivity.this);
+//                        providerList.setAdapter(mAdapter);
+//
+//
+//
+//                    }
+//                });
+//
+//
+//        Log.v("ProviderDataSetTest", listOfProviders.toString());
+
+
+        /*End of testing code!!!!!!!!
+        * */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     }
     public void doStuffWithDocumentIds(ArrayList<String> ids)

@@ -85,7 +85,7 @@ public class ProviderResultsActivity extends AppCompatActivity {
 
             @Override
             public void onGeoQueryReady() {
-
+                
             }
 
             @Override

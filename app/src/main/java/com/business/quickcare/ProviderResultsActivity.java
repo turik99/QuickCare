@@ -42,8 +42,10 @@ public class ProviderResultsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_provider_results);
 
-        double[] coordinates = getIntent().getDoubleArrayExtra("coordinates");
+        String[] coordinates = new String[2];
+        coordinates = getIntent().getStringArrayExtra("coordinates");
 
+        Log.v("IntentExtra", coordinates[0] + coordinates[1]);
 
         //Before we starting messing with the UI elements like the recycler view and stuff, we're going to get the Firebase data
         //Remember that we will eventually need to be sorting this data w/ ui elements like the spinners
@@ -60,15 +62,13 @@ public class ProviderResultsActivity extends AppCompatActivity {
 
 
         GeoFirestore geoFirestore = new GeoFirestore(reference);
-        GeoQuery geoQuery = geoFirestore.queryAtLocation(new GeoPoint(19.5272595, 49.9195225), 8587);
-
+        GeoQuery geoQuery = geoFirestore.queryAtLocation(new GeoPoint(41.7218833, -87.7346002), 8587);
 
 
         geoQuery.addGeoQueryDataEventListener(new GeoQueryDataEventListener() {
             @Override
             public void onDocumentEntered(DocumentSnapshot doc, GeoPoint geoPoint) {
                 Log.v("GeoFire", "Key Entered");
-
                 listOfProviders.add(new QuickCareProvider(doc.getString("name"), doc.getString("address"), doc.getString("rating"), doc.getId(), geoPoint));
             }
 

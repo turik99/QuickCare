@@ -69,15 +69,9 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
                         practiceSummaryDetails.setText(document.getString("summary"));
                         pricingSummary.setText(document.getString("priceskew"));
 
-                        double lat = Double.valueOf(document.getString("lat"));
-                        double lng = Double.valueOf(document.getString("lng"));
                         mapView.onStart();
                         GeoCoder geoCoder = new GeoCoder(getApplicationContext(), address, map, getDirButton);
                         geoCoder.execute();
-
-
-                        GeoFirestore geoFirestore = new GeoFirestore(db.collection("healthcareproviders"));
-                        geoFirestore.setLocation(documentId, new GeoPoint(lat, lng));
 
                     } else {
                         Log.d("HP Page Firebase", "No such document");

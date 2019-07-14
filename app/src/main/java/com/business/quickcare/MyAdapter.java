@@ -93,7 +93,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        Log.v("providerDataSet count", String.valueOf(providerDataSet.size()));
         return providerDataSet.size();
     }
 

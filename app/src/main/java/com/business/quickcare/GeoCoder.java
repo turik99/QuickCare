@@ -12,7 +12,11 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 
+import org.imperiumlabs.geofirestore.GeoFirestore;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -26,10 +30,14 @@ public class GeoCoder extends AsyncTask<String, String, String> {
     private String returnData = "notfilled";
     private String[] latLongArray = new String[2];
     private GoogleMap map;
+    private FirebaseFirestore db;
+    private DocumentReference documentReference;
     private Button getDirectionsButton;
     private Context ctx;
-    public GeoCoder(Context context, String address, GoogleMap googleMap, Button button)
+    public GeoCoder(Context context, String address, GoogleMap googleMap, Button button, FirebaseFirestore db, DocumentReference docref)
     {
+        this.db = db;
+        this.documentReference = docref;
         this.ctx = context;
         this.address = address;
         map = googleMap;
@@ -95,6 +103,11 @@ public class GeoCoder extends AsyncTask<String, String, String> {
 
             }
         });
+
+
+        GeoFirestore geoFirestore = new GeoFirestore(db.collection("healthcareproviders"));
+        geoFirestore.setLocation(documentReference.getId(), new GeoPoint(Double.valueOf(latLongArray[0]), Double.valueOf(latLongArray[1])));
+
 
     }
 }

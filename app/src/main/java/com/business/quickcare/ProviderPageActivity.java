@@ -28,6 +28,7 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
     private String documentId;
     GoogleMap map;
     MapView mapView;
+    FirebaseFirestore db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +54,7 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db = FirebaseFirestore.getInstance();
         final DocumentReference docRef = db.collection("healthcareproviders").document(documentId);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -70,8 +71,9 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
                         pricingSummary.setText(document.getString("priceskew"));
 
                         mapView.onStart();
-                        GeoCoder geoCoder = new GeoCoder(getApplicationContext(), address, map, getDirButton);
+                        GeoCoder geoCoder = new GeoCoder(getApplicationContext(), address, map, getDirButton, db, docRef);
                         geoCoder.execute();
+
 
                     } else {
                         Log.d("HP Page Firebase", "No such document");
@@ -93,6 +95,8 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
+
+
     }
     @Override
     public void onResume() {

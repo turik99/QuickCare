@@ -24,6 +24,7 @@ import com.google.type.LatLng;
 
 public class MainActivity extends AppCompatActivity {
 
+    private boolean permission = false;
     private Location location;
     private FusedLocationProviderClient providerClient;
     @Override
@@ -51,10 +52,13 @@ public class MainActivity extends AppCompatActivity {
         // check permission
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            permission = false;
             // reuqest for permission
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, locationRequestCode);
 
         } else {
+
+            permission = true;
             // already permission granted
             providerClient = LocationServices.getFusedLocationProviderClient(MainActivity.this);
             providerClient.getLastLocation().addOnSuccessListener(location -> {
@@ -76,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
+                    permission = true;
                     Log.v("Permissions", "granted and success");
 
                     providerClient = LocationServices.getFusedLocationProviderClient(MainActivity.this);
@@ -93,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
                 {
                     //The permission was not granted, fuck that
                     //Just do nothing, wait for user to input their address
+                    permission = false;
                 }
                 return;
 
@@ -110,8 +116,18 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, ProviderResultsActivity.class);
         String[] strings = new String[2];
-        strings[0] = String.valueOf(location.getLatitude());
-        strings[1] = String.valueOf(location.getLongitude());
+
+        if (permission)
+        {
+            strings[0] = String.valueOf(location.getLatitude());
+            strings[1] = String.valueOf(location.getLongitude());
+
+        }
+        else
+        {
+            strings[0] = "49.919";
+            strings[1] = "19.527";
+        }
 
         intent.putExtra("coordinates", strings);
         startActivity(intent);

@@ -10,13 +10,13 @@ public class QuickCareProvider {
     private String id;
     private String[] coordinates = new String[2];
     private GeoPoint geoPoint;
-    public QuickCareProvider (String name, String location, String rating, String id, String[] coordinates)
+    public QuickCareProvider (String name, String location, String rating, String id, GeoPoint geoPoint)
     {
         this.name = name;
         this.location = location;
         this.rating = rating;
         this.id = id;
-        this.coordinates = coordinates;
+        this.geoPoint = geoPoint;
 
     }
     public String getName()
@@ -41,6 +41,10 @@ public class QuickCareProvider {
         return this.coordinates;
     }
 
+    public GeoPoint getGeoPoint() {
+        return geoPoint;
+    }
+
     public void setLocation(String location)
     {
         this.location = location;
@@ -51,8 +55,7 @@ public class QuickCareProvider {
     }
     public void setId(String id){this.id = id;}
 
-
-
-
-
+    public void setGeoPoint(GeoPoint geoPoint) {
+        this.geoPoint = geoPoint;
+    }
 }

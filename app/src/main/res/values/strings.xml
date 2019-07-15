@@ -23,4 +23,5 @@
         <item>sketchy coke dealers</item>
     </string-array>
     <string name="title_activity_provider_page">ProviderPageActivity</string>
+    <string name="api_key">AIzaSyA9Umf_Zl8CVsC51qtzwdtOyuu62PmgBUo</string>
 </resources>

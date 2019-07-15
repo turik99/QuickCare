@@ -33,7 +33,7 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_provider_page);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar);
 
         this.documentId = getIntent().getStringExtra("documentId");
@@ -45,6 +45,7 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
         final TextView ratingDetailsText = findViewById(R.id.ratingDetailsText);
         final TextView pricingSummary = findViewById(R.id.priceSummary);
         final Button getDirButton = findViewById(R.id.getDirectionsButton);
+
 
 
         mapView = findViewById(R.id.mapView);
@@ -62,6 +63,7 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
+                        toolbar.setTitle(document.getString("name"));
                         Log.d("HP Page Firebase", "DocumentSnapshot data: " + document.getData());
                         providerDetailsName.setText(document.getString("name"));
                         ratingDetailsText.setText(document.getString("rating"));

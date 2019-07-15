@@ -12,6 +12,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
@@ -99,14 +100,16 @@ public class GeoCoder extends AsyncTask<String, String, String> {
                 mapIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 // Attempt to start an activity that can handle the Intent
 
+
                 ctx.startActivity(mapIntent);
 
             }
         });
 
+        map.addMarker(new MarkerOptions().position(location));
 
-        GeoFirestore geoFirestore = new GeoFirestore(db.collection("healthcareproviders"));
-        geoFirestore.setLocation(documentReference.getId(), new GeoPoint(Double.valueOf(latLongArray[0]), Double.valueOf(latLongArray[1])));
+//        GeoFirestore geoFirestore = new GeoFirestore(db.collection("healthcareproviders"));
+//        geoFirestore.setLocation(documentReference.getId(), new GeoPoint(Double.valueOf(latLongArray[0]), Double.valueOf(latLongArray[1])));
 
 
     }

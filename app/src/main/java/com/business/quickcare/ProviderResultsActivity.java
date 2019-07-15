@@ -36,12 +36,20 @@ public class ProviderResultsActivity extends AppCompatActivity {
 
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
+    int radius = 8;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_provider_results);
 
+
+
+        findProviders();
+    }
+
+    public void findProviders()
+    {
         String[] coordinates = new String[2];
         coordinates = getIntent().getStringArrayExtra("coordinates");
 
@@ -55,6 +63,8 @@ public class ProviderResultsActivity extends AppCompatActivity {
 
 
         //This is instantiating an arraylist of the quickareprovider class, see that class for details on what data is stored here.
+
+
         final ArrayList<QuickCareProvider> listOfProviders = new ArrayList<>();
 
 
@@ -64,7 +74,8 @@ public class ProviderResultsActivity extends AppCompatActivity {
 
         GeoFirestore geoFirestore = new GeoFirestore(reference);
 
-        GeoQuery geoQuery = geoFirestore.queryAtLocation(new GeoPoint(lat, lng), 8);
+
+        GeoQuery geoQuery = geoFirestore.queryAtLocation(new GeoPoint(lat, lng), radius);
 
         geoQuery.addGeoQueryDataEventListener(new GeoQueryDataEventListener() {
             @Override
@@ -95,22 +106,29 @@ public class ProviderResultsActivity extends AppCompatActivity {
 
                 Log.v("GeoFire", "Query Ready");
 
+                if (listOfProviders.size()==0)
+                {
+                    radius++;
+                    findProviders();
+                }
+                else
+                {
+                    //Instantiating a recyclerview, which is really a list view. The following code is mostly
+                    //boiler plate from the Android Developers website.
+                    RecyclerView providerList = findViewById(R.id.providerList);
 
-                //Instantiating a recyclerview, which is really a list view. The following code is mostly
-                //boiler plate from the Android Developers website.
-                RecyclerView providerList = findViewById(R.id.providerList);
+                    // use this setting to improve performance if you know that changes
+                    // in content do not change the layout size of the RecyclerView
+                    providerList.setHasFixedSize(true);
 
-                // use this setting to improve performance if you know that changes
-                // in content do not change the layout size of the RecyclerView
-                providerList.setHasFixedSize(true);
+                    // use a linear layout manager
+                    layoutManager = new LinearLayoutManager(getApplicationContext());
+                    providerList.setLayoutManager(layoutManager);
 
-                // use a linear layout manager
-                layoutManager = new LinearLayoutManager(getApplicationContext());
-                providerList.setLayoutManager(layoutManager);
-
-                // specify an adapter (see also next example)
-                mAdapter = new MyAdapter(listOfProviders, ProviderResultsActivity.this);
-                providerList.setAdapter(mAdapter);
+                    // specify an adapter (see also next example)
+                    mAdapter = new MyAdapter(listOfProviders, ProviderResultsActivity.this);
+                    providerList.setAdapter(mAdapter);
+                }
 
             }
 
@@ -119,7 +137,6 @@ public class ProviderResultsActivity extends AppCompatActivity {
 
             }
         });
-
     }
 
 }

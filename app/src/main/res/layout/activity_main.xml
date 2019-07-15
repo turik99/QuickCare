@@ -8,7 +8,8 @@
 
     <Button
         android:id="@+id/findProviders"
-        style="@android:style/Widget.Material.Button.Colored"
+        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+        android:backgroundTint="@color/colorAccent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -20,31 +21,43 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/getLocationButton" />
 
-    <EditText
-        android:id="@+id/locationEditText"
-        android:layout_width="0dp"
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="256dp"
+        android:layout_marginTop="128dp"
         android:layout_marginEnd="8dp"
-        android:ems="10"
-        android:hint="Chicago, Illinois"
-        android:inputType="textPostalAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <fragment
+            android:id="@+id/autocomplete_fragment"
+            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+    </androidx.cardview.widget.CardView>
 
     <Button
         android:id="@+id/getLocationButton"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:onClick="getLocation"
         android:text="Get My Location"
+        android:textColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/locationEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/cardView"
+        app:strokeColor="@color/colorAccent" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

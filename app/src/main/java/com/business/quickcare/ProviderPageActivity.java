@@ -15,6 +15,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -22,6 +23,11 @@ import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.model.Document;
 
 import org.imperiumlabs.geofirestore.GeoFirestore;
+
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ProviderPageActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -71,6 +77,27 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
                         providerDetailsAddress.setText(address);
                         practiceSummaryDetails.setText(document.getString("summary"));
                         pricingSummary.setText(document.getString("priceskew"));
+
+
+
+
+
+
+
+
+                        Map<String, Object> docData = new HashMap<>();
+                        docData.put("stringExample", "Hello world!");
+                        docData.put("booleanExample", true);
+                        docData.put("numberExample", 3.14159265);
+                        docData.put("dateExample", new Timestamp(new Date()));
+                        docData.put("listExample", Arrays.asList(1, 2, 3));
+                        docData.put("nullExample", null);
+
+
+
+
+
+
 
                         mapView.onStart();
                         GeoCoder geoCoder = new GeoCoder(getApplicationContext(), address, map, getDirButton, db, docRef);

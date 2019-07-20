@@ -24,6 +24,7 @@ import com.google.firebase.firestore.model.Document;
 
 import org.imperiumlabs.geofirestore.GeoFirestore;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -78,30 +79,15 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
                         practiceSummaryDetails.setText(document.getString("summary"));
                         pricingSummary.setText(document.getString("priceskew"));
 
-
-
-
-
-
-
-
-                        Map<String, Object> docData = new HashMap<>();
-                        docData.put("stringExample", "Hello world!");
-                        docData.put("booleanExample", true);
-                        docData.put("numberExample", 3.14159265);
-                        docData.put("dateExample", new Timestamp(new Date()));
-                        docData.put("listExample", Arrays.asList(1, 2, 3));
-                        docData.put("nullExample", null);
-
-
-
-
-
-
+                        HashMap details = (HashMap) document.get("priceList");
+                        ArrayList<DRGItem> drgItems = new ArrayList<>();
+                        for (Object key: details.keySet())
 
                         mapView.onStart();
                         GeoCoder geoCoder = new GeoCoder(getApplicationContext(), address, map, getDirButton, db, docRef);
                         geoCoder.execute();
+
+
 
 
                     } else {
@@ -112,6 +98,7 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
                 }
             }
         });
+
 
 
 

@@ -26,6 +26,7 @@ import org.imperiumlabs.geofirestore.GeoFirestore;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -79,9 +80,17 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
                         practiceSummaryDetails.setText(document.getString("summary"));
                         pricingSummary.setText(document.getString("priceskew"));
 
-                        HashMap details = (HashMap) document.get("priceList");
+                        HashMap<String, String> drgMap = (HashMap<String, String>) document.get("priceList");
                         ArrayList<DRGItem> drgItems = new ArrayList<>();
-                        for (Object key: details.keySet())
+
+                        for (Object value: drgMap.values())
+                        {
+                            ArrayList<String> arrayList = (ArrayList<String>) value;
+                            Log.v("DRG Test", arrayList.get(0));
+
+                            Log.v("DRG Test", value.toString());
+                        }
+
 
                         mapView.onStart();
                         GeoCoder geoCoder = new GeoCoder(getApplicationContext(), address, map, getDirButton, db, docRef);

@@ -8,7 +8,7 @@
 
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/procedureCostCardView"
+        android:id="@+id/procedureCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -30,6 +30,8 @@
                 android:layout_height="64dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/chevron_up" />
@@ -58,17 +60,17 @@
                 android:id="@+id/procedurePriceSkew"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:layout_marginStart="2dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="2dp"
                 app:layout_constraintStart_toEndOf="@+id/procedureCost"
                 app:layout_constraintTop_toBottomOf="@+id/procedureName"
                 app:srcCompat="@drawable/cash_cheap" />
 
             <TextView
-                android:id="@+id/procedurePriceMessage"
+                android:id="@+id/procedurepricemessage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="2dp"
+                android:layout_marginStart="8dp"
                 android:text="cheaper than average"
                 app:layout_constraintBottom_toBottomOf="@+id/procedureCost"
                 app:layout_constraintStart_toEndOf="@+id/procedurePriceSkew" />

@@ -3,10 +3,10 @@ package com.business.quickcare;
 public class DRGItem {
     private int drgCode;
     private String name;
-    private int price;
-    private int costSkew;
+    private String price;
+    private String costSkew;
 
-    public DRGItem(int drgCode, String name, int price, int costSkew)
+    public DRGItem(int drgCode, String name, String price, String costSkew)
     {
         this.drgCode = drgCode;
         this.name = name;
@@ -21,10 +21,10 @@ public class DRGItem {
     public String getName() {
         return name;
     }
-    public int getPrice() {
+    public String getPrice() {
         return price;
     }
-    public int getCostSkew(){
+    public String getCostSkew(){
         return costSkew;
     }
 

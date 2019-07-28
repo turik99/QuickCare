@@ -13,11 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class DRGItemAdapter extends RecyclerView.Adapter {
+public class DRGItemAdapter extends RecyclerView.Adapter<DRGItemAdapter.DRGViewHolder> {
 
 
     private Context context;
-    private RecyclerView recyclerView;
     private ArrayList<DRGItem> drgItems;
 
 
@@ -47,15 +46,14 @@ public class DRGItemAdapter extends RecyclerView.Adapter {
     }
 
 
-    public DRGItemAdapter(Context ctx, ArrayList<DRGItem> drgItems, RecyclerView recyclerView) {
+    public DRGItemAdapter(Context ctx, ArrayList<DRGItem> drgItems) {
         this.context = ctx;
         this.drgItems = drgItems;
-        this.recyclerView = recyclerView;
     }
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public DRGViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view  = LayoutInflater.from(parent.getContext()).inflate(R.layout.procedure_item, parent, false);
         CardView cardView = view.findViewById(R.id.procedureCardView);
 
@@ -73,13 +71,16 @@ public class DRGItemAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull DRGViewHolder holder, int position) {
+        holder.name.setText( drgItems.get(position).getName() );
+        holder.priceSkew.setText( drgItems.get(position).getCostSkew() );
+        holder.price.setText( drgItems.get(position).getPrice() );
 
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return drgItems.size();
     }
 
 

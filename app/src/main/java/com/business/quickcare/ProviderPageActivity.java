@@ -2,34 +2,25 @@ package com.business.quickcare;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.GeoPoint;
-import com.google.firebase.firestore.model.Document;
-
-import org.imperiumlabs.geofirestore.GeoFirestore;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 
 public class ProviderPageActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -85,11 +76,17 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
 
                         for (Object value: drgMap.values())
                         {
-                            ArrayList<String> arrayList = (ArrayList<String>) value;
-                            Log.v("DRG Test", arrayList.get(0));
-
                             Log.v("DRG Test", value.toString());
+
+                            String[] array = value.toString().split(", ");
+                            Log.v("DRG array test", array[0] + array[1] + array[2]);
+                            drgItems.add(new DRGItem(value.hashCode(), array[0], array[1], array[2]));
                         }
+
+                        RecyclerView recyclerView = findViewById(R.id.priceListDetails);
+                        DRGItemAdapter drgItemAdapter = new DRGItemAdapter(ProviderPageActivity.this, drgItems);
+                        recyclerView.setAdapter(drgItemAdapter);
+
 
 
                         mapView.onStart();

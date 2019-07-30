@@ -45,6 +45,7 @@ public class ProviderResultsActivity extends AppCompatActivity {
         double lng = Double.valueOf(coordinates[1]);
 
 
+
         Log.v("IntentExtra", coordinates[0] + coordinates[1]);
 
 

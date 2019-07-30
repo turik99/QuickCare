@@ -59,7 +59,7 @@ public class DRGItemAdapter extends RecyclerView.Adapter<DRGItemAdapter.DRGViewH
 
         TextView name = view.findViewById(R.id.procedureName);
         TextView priceSkew = view.findViewById(R.id.procedurepricemessage);
-        ImageView priceImage = view.findViewById(R.id.procedurePriceSkew);
+        ImageView priceImage = view.findViewById(R.id.priceImage);
         TextView price = view.findViewById(R.id.procedureCost);
 
 

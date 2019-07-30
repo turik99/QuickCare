@@ -1,16 +1,13 @@
 package com.business.quickcare;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,9 +17,7 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
@@ -37,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
     private Location location;
     private FusedLocationProviderClient providerClient;
     private AutocompleteSupportFragment autocompleteFragment;
+    private SharedPreferences sharedPreferences;
+    String userLocationPref;
+    private SharedPreferences.Editor editor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,17 +49,28 @@ public class MainActivity extends AppCompatActivity {
             Places.initialize(getApplicationContext(), getString(R.string.api_key), Locale.US);
         }
 
+
+        this.sharedPreferences = getSharedPreferences("preferences", MODE_PRIVATE);
+        this.userLocationPref = sharedPreferences.getString("address", "One South Wacker, South Wacker Drive, Chicago, IL");
+
         location = new Location("");
 
+        location.setLatitude(41.8815195);
+        location.setLongitude(-87.6381757);
 
 // Initialize the AutocompleteSupportFragment.
         autocompleteFragment = (AutocompleteSupportFragment)
                 getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
 
+        autocompleteFragment.setText(userLocationPref);
 // Specify the types of place data to return.
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
 
 // Set up a PlaceSelectionListener to handle the response.
+
+
+
+
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
@@ -74,6 +83,11 @@ public class MainActivity extends AppCompatActivity {
 
                 location.setLatitude(latLng.latitude);
                 location.setLongitude(latLng.longitude);
+
+                editor = sharedPreferences.edit();
+                editor.putString("latitude", String.valueOf(location.getLatitude()));
+                editor.putString("longitude", String.valueOf(location.getLongitude()));
+                editor.apply();
             }
 
             @Override
@@ -106,9 +120,14 @@ public class MainActivity extends AppCompatActivity {
             providerClient = LocationServices.getFusedLocationProviderClient(MainActivity.this);
             providerClient.getLastLocation().addOnSuccessListener(location -> {
                 Log.v("providerLocationClient", "got location success");
-                SearchBarGeoCoder cder = new SearchBarGeoCoder(location, autocompleteFragment);
+                SearchBarGeoCoder cder = new SearchBarGeoCoder(location, autocompleteFragment, sharedPreferences);
                 cder.execute();
                 MainActivity.this.location = location;
+                editor = sharedPreferences.edit();
+                editor.putString("latitude", String.valueOf(location.getLatitude()));
+                editor.putString("longitude", String.valueOf(location.getLongitude()));
+                editor.apply();
+
             });
         }
 
@@ -124,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
+                    // location task you need to do.
                     permission = true;
                     Log.v("Permissions", "granted and success");
 
@@ -133,9 +152,13 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Location location) {
                             Log.v("providerLocationClient", "got location success");
-                            SearchBarGeoCoder cder = new SearchBarGeoCoder(location, autocompleteFragment);
+                            SearchBarGeoCoder cder = new SearchBarGeoCoder(location, autocompleteFragment, sharedPreferences);
                             cder.execute();
                             MainActivity.this.location = location;
+                            editor = sharedPreferences.edit();
+                            editor.putString("latitude", String.valueOf(location.getLatitude()));
+                            editor.putString("longitude", String.valueOf(location.getLongitude()));
+                            editor.apply();
 
 
                         }
@@ -168,16 +191,15 @@ public class MainActivity extends AppCompatActivity {
         if (location.getLatitude() != 0.0 )
         {
 
-            strings[0] = String.valueOf(location.getLatitude());
-            strings[1] = String.valueOf(location.getLongitude());
+
+            strings[0] = sharedPreferences.getString("latitude", "41.8815195");
+            strings[1] = sharedPreferences.getString("longitude", "-87.6381757");
 
         }
         else
         {
-            Toast.makeText(getBaseContext(), "You didn't provide a location! Defaulting to rural poland.", Toast.LENGTH_LONG).show();
             strings[0] = "49.919";
             strings[1] = "19.527";
-
         }
 
         intent.putExtra("coordinates", strings);

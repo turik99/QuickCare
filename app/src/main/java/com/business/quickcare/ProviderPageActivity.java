@@ -78,7 +78,7 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
                         practiceSummaryDetails.setText(document.getString("summary"));
                         pricingSummary.setText((String.valueOf(document.get("priceskew"))));
 
-                        HashMap<String, Object> drgMap = (HashMap<String, Object>) document.get("priceList");
+                        HashMap<String, Object> drgMap = (HashMap<String, Object>) document.get("pricelist");
                         ArrayList<DRGItem> drgItems = new ArrayList<>();
 
 
@@ -134,6 +134,7 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
         drg.put("country", "USA");
 
 
+        docRef = docRef.get
         docRef.set(drg).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {

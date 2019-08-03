@@ -15,14 +15,13 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.model.Document;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -79,35 +78,6 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
                         practiceSummaryDetails.setText(document.getString("summary"));
                         pricingSummary.setText((String.valueOf(document.get("priceskew"))));
 
-//                        HashMap<String, Object> drgMap = (HashMap<String, Object>) document.get("pricelist");
-                        ArrayList<DRGItem> drgItems = new ArrayList<>();
-//
-//
-//                        for (Object value: drgMap.values())
-//                        {
-//                            Log.v("DRG Test", value.toString());
-//
-//                            String[] array = value.toString().split("\\s*,\\s*");
-//                            Log.v("DRG array test", array[0] + array[1] + array[2]);
-//                            drgItems.add(new DRGItem(value.hashCode(), array[0], array[1], array[2]));
-//                        }
-
-
-
-                        RecyclerView recyclerView = findViewById(R.id.priceListDetails);
-
-                        // use this setting to improve performance if you know that changes
-                        // in content do not change the layout size of the RecyclerView
-                        recyclerView.setHasFixedSize(true);
-
-                        // use a linear layout manager
-                        layoutManager = new LinearLayoutManager(getApplicationContext());
-                        recyclerView.setLayoutManager(layoutManager);
-
-
-
-                        DRGItemAdapter drgItemAdapter = new DRGItemAdapter(ProviderPageActivity.this, drgItems);
-                        recyclerView.setAdapter(drgItemAdapter);
 
 
 
@@ -127,50 +97,41 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
             }
         });
 
-        Map<String, Object> drg = new HashMap<>();
-        drg.put("DRG", "864");
-        drg.put("name", "Fever and Related Services");
-        drg.put("price", "20472");
-        drg.put("priceskew", 2);
-
-
-        Map<String, Object> drg1 = new HashMap<>();
-        drg1.put("DRG", "538");
-        drg1.put("name", "Sprains and Strains");
-        drg1.put("price", "6180");
-        drg1.put("priceskew", 1);
-
-        Map<String, Object> drg2 = new HashMap<>();
-        drg1.put("DRG", "956");
-        drg1.put("name", "Limb Reattachment (Hip, Leg)");
-        drg1.put("price", "1100187");
-        drg1.put("priceskew", 3);
-
-
-
 
 
         CollectionReference prices = docRef.collection("prices");
-        prices.add(drg).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+        prices.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onSuccess(DocumentReference documentReference) {
-                Log.v("Firestore Add", "wi hev suksess!");
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                //                        HashMap<String, Object> drgMap = (HashMap<String, Object>) document.get("pricelist");
+                ArrayList<DRGItem> drgItems = new ArrayList<>();
+                RecyclerView recyclerView = findViewById(R.id.priceListDetails);
+
+                for (DocumentSnapshot doc: task.getResult().getDocuments())
+                {
+                    drgItems.add(new DRGItem(doc.getString("DRG"),
+                            doc.getString("name"),
+                            doc.getString("price"),
+                            String.valueOf(doc.get("priceskew"))));
+                }
+                recyclerView.setHasFixedSize(true);
+
+                // use a linear layout manager
+                layoutManager = new LinearLayoutManager(getApplicationContext());
+                recyclerView.setLayoutManager(layoutManager);
+
+                DRGItemAdapter drgItemAdapter = new DRGItemAdapter(ProviderPageActivity.this, drgItems);
+                recyclerView.setAdapter(drgItemAdapter);
+
+
             }
         });
 
-        prices.add(drg1).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-            @Override
-            public void onSuccess(DocumentReference documentReference) {
-                Log.v("Firestore Add", "wi hev suksess!");
-            }
-        });
 
-        prices.add(drg2).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-            @Override
-            public void onSuccess(DocumentReference documentReference) {
-                Log.v("Firestore Add", "wi hev suksess!");
-            }
-        });
+
+
+
+       
 
 
     }

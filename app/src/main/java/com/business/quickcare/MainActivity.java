@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     String userLocationPref;
     private SharedPreferences.Editor editor;
+    boolean locationChanged;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,8 +57,13 @@ public class MainActivity extends AppCompatActivity {
 
         location = new Location("");
 
-        location.setLatitude(41.8815195);
-        location.setLongitude(-87.6381757);
+
+        float userLat = Float.valueOf(sharedPreferences.getString("userLatitude", "41.8818"));
+        float userLong = Float.valueOf(sharedPreferences.getString("userLongitude", "-87.6359"));
+
+        locationChanged = false;
+        location.setLatitude(userLat);
+        location.setLongitude(userLong);
 
 // Initialize the AutocompleteSupportFragment.
         autocompleteFragment = (AutocompleteSupportFragment)
@@ -75,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
+                locationChanged = true;
                 // TODO: Get info about the selected place.
                 Log.i("Places", "Place: " + place.getName() + ", " + place.getId());
 
@@ -125,9 +132,10 @@ public class MainActivity extends AppCompatActivity {
                 SearchBarGeoCoder cder = new SearchBarGeoCoder(location, autocompleteFragment, sharedPreferences);
                 cder.execute();
                 MainActivity.this.location = location;
+
                 editor = sharedPreferences.edit();
-                editor.putString("latitude", String.valueOf(location.getLatitude()));
-                editor.putString("longitude", String.valueOf(location.getLongitude()));
+                editor.putString("userLatitude", String.valueOf(location.getLatitude()));
+                editor.putString("userLongitude", String.valueOf(location.getLongitude()));
                 editor.apply();
 
             });
@@ -158,8 +166,8 @@ public class MainActivity extends AppCompatActivity {
                             cder.execute();
                             MainActivity.this.location = location;
                             editor = sharedPreferences.edit();
-                            editor.putString("latitude", String.valueOf(location.getLatitude()));
-                            editor.putString("longitude", String.valueOf(location.getLongitude()));
+                            editor.putString("userLatitude", String.valueOf(location.getLatitude()));
+                            editor.putString("userLongitude", String.valueOf(location.getLongitude()));
                             editor.apply();
 
 
@@ -194,8 +202,17 @@ public class MainActivity extends AppCompatActivity {
         {
 
 
-            strings[0] = sharedPreferences.getString("latitude", "41.8815195");
-            strings[1] = sharedPreferences.getString("longitude", "-87.6381757");
+            if (locationChanged)
+            {
+                strings[0] = sharedPreferences.getString("latitude", "41.8815195");
+                strings[1] = sharedPreferences.getString("longitude", "-87.6381757");
+            }
+            else
+            {
+                strings[0] = sharedPreferences.getString("userLatitude", "41.8815195");
+                strings[1] = sharedPreferences.getString("userLongitude", "-87.6381757");
+
+            }
 
         }
         else

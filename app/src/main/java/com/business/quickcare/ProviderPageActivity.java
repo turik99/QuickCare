@@ -18,6 +18,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -134,18 +135,12 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
         drg.put("country", "USA");
 
 
-        docRef = docRef.get
-        docRef.set(drg).addOnSuccessListener(new OnSuccessListener<Void>() {
+
+        CollectionReference prices = docRef.collection("prices");
+        prices.add(drg).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
-            public void onSuccess(Void aVoid) {
-
-            }
-
-
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
+            public void onSuccess(DocumentReference documentReference) {
+                Log.v("Firestore Add", "wi hev suksess!");
             }
         });
 

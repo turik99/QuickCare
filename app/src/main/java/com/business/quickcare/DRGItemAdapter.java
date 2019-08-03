@@ -64,9 +64,6 @@ public class DRGItemAdapter extends RecyclerView.Adapter<DRGItemAdapter.DRGViewH
 
 
         DRGViewHolder drgViewHolder = new DRGViewHolder(view, cardView, name, priceSkew, priceImage, price);
-
-
-
         return drgViewHolder;
     }
 

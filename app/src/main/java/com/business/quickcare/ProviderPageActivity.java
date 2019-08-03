@@ -24,9 +24,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 public class ProviderPageActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private String documentId;
@@ -76,7 +73,14 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
                         String address = document.getString("address");
                         providerDetailsAddress.setText(address);
                         practiceSummaryDetails.setText(document.getString("summary"));
-                        pricingSummary.setText((String.valueOf(document.get("priceskew"))));
+                        int priceskew = Integer.valueOf(document.getString("priceskew"));
+
+                        switch (priceskew)
+                        {
+                            case 0:
+
+                        }
+
 
 
 
@@ -131,7 +135,7 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
 
 
 
-       
+
 
 
     }

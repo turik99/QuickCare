@@ -79,18 +79,18 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
                         practiceSummaryDetails.setText(document.getString("summary"));
                         pricingSummary.setText((String.valueOf(document.get("priceskew"))));
 
-                        HashMap<String, Object> drgMap = (HashMap<String, Object>) document.get("pricelist");
+//                        HashMap<String, Object> drgMap = (HashMap<String, Object>) document.get("pricelist");
                         ArrayList<DRGItem> drgItems = new ArrayList<>();
-
-
-                        for (Object value: drgMap.values())
-                        {
-                            Log.v("DRG Test", value.toString());
-
-                            String[] array = value.toString().split("\\s*,\\s*");
-                            Log.v("DRG array test", array[0] + array[1] + array[2]);
-                            drgItems.add(new DRGItem(value.hashCode(), array[0], array[1], array[2]));
-                        }
+//
+//
+//                        for (Object value: drgMap.values())
+//                        {
+//                            Log.v("DRG Test", value.toString());
+//
+//                            String[] array = value.toString().split("\\s*,\\s*");
+//                            Log.v("DRG array test", array[0] + array[1] + array[2]);
+//                            drgItems.add(new DRGItem(value.hashCode(), array[0], array[1], array[2]));
+//                        }
 
 
 
@@ -127,12 +127,26 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
             }
         });
 
-
-
         Map<String, Object> drg = new HashMap<>();
-        drg.put("DRG", "Los Angeles");
-        drg.put("state", "CA");
-        drg.put("country", "USA");
+        drg.put("DRG", "864");
+        drg.put("name", "Fever and Related Services");
+        drg.put("price", "20472");
+        drg.put("priceskew", 2);
+
+
+        Map<String, Object> drg1 = new HashMap<>();
+        drg1.put("DRG", "538");
+        drg1.put("name", "Sprains and Strains");
+        drg1.put("price", "6180");
+        drg1.put("priceskew", 1);
+
+        Map<String, Object> drg2 = new HashMap<>();
+        drg1.put("DRG", "956");
+        drg1.put("name", "Limb Reattachment (Hip, Leg)");
+        drg1.put("price", "1100187");
+        drg1.put("priceskew", 3);
+
+
 
 
 
@@ -144,6 +158,19 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
             }
         });
 
+        prices.add(drg1).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                Log.v("Firestore Add", "wi hev suksess!");
+            }
+        });
+
+        prices.add(drg2).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                Log.v("Firestore Add", "wi hev suksess!");
+            }
+        });
 
 
     }

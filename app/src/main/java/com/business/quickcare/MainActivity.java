@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         this.sharedPreferences = getSharedPreferences("preferences", MODE_PRIVATE);
         this.userLocationPref = sharedPreferences.getString("address", "One South Wacker, South Wacker Drive, Chicago, IL");
 
+
         location = new Location("");
 
         location.setLatitude(41.8815195);
@@ -80,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
                 LatLng latLng = place.getLatLng();
                 Log.v("lat lng places", place.getLatLng().toString());
                 Log.v("lat lng places name", location.getProvider());
+
 
                 location.setLatitude(latLng.latitude);
                 location.setLongitude(latLng.longitude);

@@ -79,9 +79,8 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
                         {
                             case 0:
 
+
                         }
-
-
 
 
 

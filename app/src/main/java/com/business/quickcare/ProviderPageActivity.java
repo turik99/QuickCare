@@ -2,12 +2,14 @@ package com.business.quickcare;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,7 +17,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -31,13 +32,14 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
     MapView mapView;
     FirebaseFirestore db;
     private RecyclerView.LayoutManager layoutManager;
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_provider_page);
-        Toolbar toolbar = findViewById(R.id.toolbar1);
-        setSupportActionBar(toolbar);
+//        Toolbar toolbar = findViewById(R.id.toolbar1);
+//        setSupportActionBar(toolbar);
 
         this.documentId = getIntent().getStringExtra("documentId");
 
@@ -55,8 +57,16 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
+        searchView = findViewById(R.id.searchProcedures);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //This keeps the keyboard from showing up when that searchbar is set to 'open'
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
+
+
+
+
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         db = FirebaseFirestore.getInstance();
         final DocumentReference docRef = db.collection("healthcareproviders").document(documentId);
@@ -66,7 +76,8 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        toolbar.setTitle(document.getString("name"));
+//                        toolbar.setTitle(document.getString("name"));
+//                        toolbar.setTitle("");
                         Log.d("HP Page Firebase", "DocumentSnapshot data: " + document.getData());
                         providerDetailsName.setText(document.getString("name"));
                         ratingDetailsText.setText(document.getString("rating"));
@@ -109,6 +120,7 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
                 //                        HashMap<String, Object> drgMap = (HashMap<String, Object>) document.get("pricelist");
                 ArrayList<DRGItem> drgItems = new ArrayList<>();
                 RecyclerView recyclerView = findViewById(R.id.priceListDetails);
+                recyclerView.setNestedScrollingEnabled(false);
 
                 for (DocumentSnapshot doc: task.getResult().getDocuments())
                 {
@@ -137,6 +149,10 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
 
 
 
+    }
+    public void searchViewClicked(View view)
+    {
+        searchView.setIconified(false);
     }
 
     @Override

@@ -91,7 +91,7 @@ public class GeoCoder extends AsyncTask<String, String, String> {
             @Override
             public void onClick(View view) {
                 // Create a Uri from an intent string. Use the result to create an Intent.
-                Uri gmmIntentUri = Uri.parse("geo:" + location.latitude + "," + location.longitude);
+                Uri gmmIntentUri = Uri.parse("http://maps.google.com/maps?daddr=" + location.latitude + "," + location.longitude + "Hospital");
 
                 // Create an Intent from gmmIntentUri. Set the action to ACTION_VIEW
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
@@ -110,7 +110,6 @@ public class GeoCoder extends AsyncTask<String, String, String> {
 
 //        GeoFirestore geoFirestore = new GeoFirestore(db.collection("healthcareproviders"));
 //        geoFirestore.setLocation(documentReference.getId(), new GeoPoint(Double.valueOf(latLongArray[0]), Double.valueOf(latLongArray[1])));
-
 
     }
 }

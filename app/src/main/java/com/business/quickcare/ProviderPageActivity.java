@@ -17,6 +17,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -25,6 +26,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 public class ProviderPageActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private String documentId;
@@ -33,6 +37,7 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
     FirebaseFirestore db;
     private RecyclerView.LayoutManager layoutManager;
     private SearchView searchView;
+    private DocumentReference docRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +74,7 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         db = FirebaseFirestore.getInstance();
-        final DocumentReference docRef = db.collection("healthcareproviders").document(documentId);
+        docRef = db.collection("healthcareproviders").document(documentId);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -144,12 +149,27 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
 
 
 
-
-
-
+        addStuff();
 
 
     }
+
+    public void addStuff()
+    {
+        Map<String, Object> dataToPut = new HashMap<>();
+        dataToPut.put("0", "Aetna");
+        dataToPut.put("1", "UnitedHealth");
+        dataToPut.put("2", "Allianz Life");
+
+        docRef.update("insuranceproviders", dataToPut).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.v("added stuff", "wif suksess");
+            }
+        });
+    }
+
+
     public void searchViewClicked(View view)
     {
         searchView.setIconified(false);

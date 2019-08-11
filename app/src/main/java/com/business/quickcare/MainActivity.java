@@ -8,6 +8,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -194,35 +195,43 @@ public class MainActivity extends AppCompatActivity {
     {
         //This method is called when the user clicks the find providers button, it's defined in the
         //android:onclick attribute of the xml.
-
-        Intent intent = new Intent(this, ProviderResultsActivity.class);
-        String[] strings = new String[2];
-
-        if (location.getLatitude() != 0.0 )
+        if (autocompleteFragment.a.getText().toString().isEmpty())
         {
-
-
-            if (locationChanged)
-            {
-                strings[0] = sharedPreferences.getString("latitude", "41.8815195");
-                strings[1] = sharedPreferences.getString("longitude", "-87.6381757");
-            }
-            else
-            {
-                strings[0] = sharedPreferences.getString("userLatitude", "41.8815195");
-                strings[1] = sharedPreferences.getString("userLongitude", "-87.6381757");
-
-            }
-
+            Toast.makeText(this, "Please enter a location to find providers", Toast.LENGTH_SHORT).show();
         }
         else
         {
-            strings[0] = "49.919";
-            strings[1] = "19.527";
+            Intent intent = new Intent(this, ProviderResultsActivity.class);
+            String[] strings = new String[2];
+
+            if (location.getLatitude() != 0.0 )
+            {
+
+
+                if (locationChanged)
+                {
+                    strings[0] = sharedPreferences.getString("latitude", "41.8815195");
+                    strings[1] = sharedPreferences.getString("longitude", "-87.6381757");
+                }
+                else
+                {
+                    strings[0] = sharedPreferences.getString("userLatitude", "41.8815195");
+                    strings[1] = sharedPreferences.getString("userLongitude", "-87.6381757");
+
+                }
+
+            }
+            else
+            {
+                strings[0] = "49.919";
+                strings[1] = "19.527";
+            }
+
+            intent.putExtra("coordinates", strings);
+            startActivity(intent);
         }
 
-        intent.putExtra("coordinates", strings);
-        startActivity(intent);
+
 
     }
 

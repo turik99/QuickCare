@@ -2,15 +2,21 @@ package com.business.quickcare;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.imperiumlabs.geofirestore.GeoFirestore;
 import org.imperiumlabs.geofirestore.GeoQuery;
@@ -22,6 +28,13 @@ public class ProviderResultsActivity extends AppCompatActivity {
 
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
+    private GeoFirestore geoFirestore;
+    private GeoQuery geoQuery;
+    private Query query;
+    private FirebaseFirestore db;
+    private CollectionReference reference;
+    private String[] coordinates = new String[2];
+
     int radius = 8;
 
     @Override
@@ -30,14 +43,47 @@ public class ProviderResultsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_provider_results);
 
 
+        Button goButton = findViewById(R.id.filterButton);
+
+
+        Spinner providerSpinner = findViewById(R.id.providerSpinner);
+        Spinner insuranceSpinner = findViewById(R.id.insuranceSpinner);
+
+
+
+        goButton.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        coordinates = getIntent().getStringArrayExtra("coordinates");
 
         findProviders();
+
+
+
+
+
+
+
     }
+
+
+    public void filterProviders()
+    {
+        query = reference.whereArrayContains("insuranceproviders", "Aetna");
+        query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                
+            }
+        });
+    }
+
 
     public void findProviders()
     {
-        String[] coordinates = new String[2];
-        coordinates = getIntent().getStringArrayExtra("coordinates");
 
 
 
@@ -49,20 +95,18 @@ public class ProviderResultsActivity extends AppCompatActivity {
         Log.v("IntentExtra", coordinates[0] + coordinates[1]);
 
 
-        //This is instantiating an arraylist of the quickareprovider class, see that class for details on what data is stored here.
+        //This is instantiating an arraylist of the quick care provider class, see that class for details on what data is stored here.
 
 
         final ArrayList<QuickCareProvider> listOfProviders = new ArrayList<>();
 
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference reference = db.collection("healthcareproviders");
+        db = FirebaseFirestore.getInstance();
+        reference = db.collection("healthcareproviders");
 
 
-        GeoFirestore geoFirestore = new GeoFirestore(reference);
-
-
-        GeoQuery geoQuery = geoFirestore.queryAtLocation(new GeoPoint(lat, lng), radius);
+        geoFirestore = new GeoFirestore(reference);
+        geoQuery = geoFirestore.queryAtLocation(new GeoPoint(lat, lng), radius);
 
         geoQuery.addGeoQueryDataEventListener(new GeoQueryDataEventListener() {
             @Override

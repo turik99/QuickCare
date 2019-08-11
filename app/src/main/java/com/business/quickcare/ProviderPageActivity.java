@@ -22,6 +22,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -172,7 +173,7 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
         dataToPut.put("1", "UnitedHealth");
         dataToPut.put("2", "Allianz Life");
 
-        docRef.update("insuranceproviders", dataToPut).addOnSuccessListener(new OnSuccessListener<Void>() {
+        docRef.update("insuranceproviders", FieldValue.arrayUnion("Aetna", "United Health", "Allianz Life")).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.v("added stuff", "wif suksess");

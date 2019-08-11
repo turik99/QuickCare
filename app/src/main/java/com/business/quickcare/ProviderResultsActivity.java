@@ -32,7 +32,7 @@ public class ProviderResultsActivity extends AppCompatActivity {
     private GeoQuery geoQuery;
     private Query query;
     private FirebaseFirestore db;
-    private CollectionReference reference;
+    private CollectionReference collectionReference;
     private String[] coordinates = new String[2];
 
     int radius = 8;
@@ -68,16 +68,28 @@ public class ProviderResultsActivity extends AppCompatActivity {
 
     public void filterProviders()
     {
-        query = reference.whereArrayContains("insuranceproviders", "Aetna");
+        query = collectionReference.whereArrayContains("insuranceproviders", "Aetna");
         query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 for (DocumentSnapshot snapshot: queryDocumentSnapshots.getDocuments())
                 {
-                    Log.v("filterTest", snapshot.getString("name"));
+                    Log.v("filterTest", snapshot.getId() + " " + snapshot.getString("name"));
                 }
             }
         });
+
+
+
+
+
+
+
+
+
+
+
+
     }
 
 
@@ -101,10 +113,10 @@ public class ProviderResultsActivity extends AppCompatActivity {
 
 
         db = FirebaseFirestore.getInstance();
-        reference = db.collection("healthcareproviders");
+        collectionReference = db.collection("healthcareproviders");
 
 
-        geoFirestore = new GeoFirestore(reference);
+        geoFirestore = new GeoFirestore(collectionReference);
         geoQuery = geoFirestore.queryAtLocation(new GeoPoint(lat, lng), radius);
 
         geoQuery.addGeoQueryDataEventListener(new GeoQueryDataEventListener() {
@@ -112,6 +124,9 @@ public class ProviderResultsActivity extends AppCompatActivity {
             public void onDocumentEntered(DocumentSnapshot doc, GeoPoint geoPoint) {
                 Log.v("GeoFire", "Key Entered");
                 Log.v("GeoFire", doc.getId() + geoPoint.toString());
+
+
+                Log.v("GeoFire", doc.toString());
 
                 listOfProviders.add(new QuickCareProvider(doc.getString("name"), doc.getString("address"), doc.getString("rating"), doc.getId(), geoPoint));
             }

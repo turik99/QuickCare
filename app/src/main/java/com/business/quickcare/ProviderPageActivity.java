@@ -38,7 +38,14 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
     private RecyclerView.LayoutManager layoutManager;
     private SearchView searchView;
     private DocumentReference docRef;
-
+    private CollectionReference prices;
+    private RecyclerView pricesRecycler;
+    TextView providerDetailsName;
+    TextView providerDetailsAddress;
+    TextView practiceSummaryDetails;
+    TextView ratingDetailsText;
+    TextView pricingSummary;
+    Button getDirButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,12 +56,12 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
         this.documentId = getIntent().getStringExtra("documentId");
 
 
-        final TextView providerDetailsName = findViewById(R.id.providerDetailsName);
-        final TextView providerDetailsAddress = findViewById(R.id.providerDetailsAddress);
-        final TextView practiceSummaryDetails = findViewById(R.id.practiceSummaryDetails);
-        final TextView ratingDetailsText = findViewById(R.id.ratingDetailsText);
-        final TextView pricingSummary = findViewById(R.id.priceSummary);
-        final Button getDirButton = findViewById(R.id.getDirectionsButton);
+        providerDetailsName = findViewById(R.id.providerDetailsName);
+        providerDetailsAddress = findViewById(R.id.providerDetailsAddress);
+        practiceSummaryDetails = findViewById(R.id.practiceSummaryDetails);
+        ratingDetailsText = findViewById(R.id.ratingDetailsText);
+        pricingSummary = findViewById(R.id.priceSummary);
+        getDirButton = findViewById(R.id.getDirectionsButton);
 
 
 
@@ -67,12 +74,21 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
         //This keeps the keyboard from showing up when that searchbar is set to 'open'
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
+        getDocumentInfo();
 
 
 
 
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+    }
+
+
+
+
+    //Getting the prices and adding them into that recyclerview. its a reference to a collection in the document we already are referencing.
+
+    public void getDocumentInfo()
+    {
         db = FirebaseFirestore.getInstance();
         docRef = db.collection("healthcareproviders").document(documentId);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -91,41 +107,37 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
                         practiceSummaryDetails.setText(document.getString("summary"));
                         int priceskew = Integer.valueOf(document.getString("priceskew"));
 
-                        switch (priceskew)
-                        {
-                            case 0:
-
-
-                        }
-
-
-
                         mapView.onStart();
                         GeoCoder geoCoder = new GeoCoder(getApplicationContext(), address, map, getDirButton, db, docRef);
                         geoCoder.execute();
 
 
 
-
-                    } else {
-                        Log.d("HP Page Firebase", "No such document");
+                        getPrices();
                     }
+
+
+
                 } else {
-                    Log.d("HP Page Firebase", "get failed with ", task.getException());
+                    Log.d("Provider Page Firebase", "get failed with ", task.getException());
                 }
             }
         });
 
 
+    }
 
-        CollectionReference prices = docRef.collection("prices");
+
+    public void getPrices()
+    {
+        prices = docRef.collection("prices");
         prices.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 //                        HashMap<String, Object> drgMap = (HashMap<String, Object>) document.get("pricelist");
                 ArrayList<DRGItem> drgItems = new ArrayList<>();
-                RecyclerView recyclerView = findViewById(R.id.priceListDetails);
-                recyclerView.setNestedScrollingEnabled(false);
+                pricesRecycler = findViewById(R.id.priceListDetails);
+                pricesRecycler.setNestedScrollingEnabled(false);
 
                 for (DocumentSnapshot doc: task.getResult().getDocuments())
                 {
@@ -134,22 +146,21 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
                             doc.getString("price"),
                             String.valueOf(doc.get("priceskew"))));
                 }
-                recyclerView.setHasFixedSize(true);
+                pricesRecycler.setHasFixedSize(true);
 
                 // use a linear layout manager
                 layoutManager = new LinearLayoutManager(getApplicationContext());
-                recyclerView.setLayoutManager(layoutManager);
+                pricesRecycler.setLayoutManager(layoutManager);
 
                 DRGItemAdapter drgItemAdapter = new DRGItemAdapter(ProviderPageActivity.this, drgItems);
-                recyclerView.setAdapter(drgItemAdapter);
+                pricesRecycler.setAdapter(drgItemAdapter);
 
+
+                addStuff();
 
             }
         });
 
-
-
-        addStuff();
 
 
     }
@@ -168,7 +179,6 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
             }
         });
     }
-
 
     public void searchViewClicked(View view)
     {

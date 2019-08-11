@@ -50,7 +50,6 @@ public class ProviderResultsActivity extends AppCompatActivity {
         Spinner insuranceSpinner = findViewById(R.id.insuranceSpinner);
 
 
-
         goButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,9 +61,6 @@ public class ProviderResultsActivity extends AppCompatActivity {
         findProviders();
 
         filterProviders();
-
-
-
 
 
     }

@@ -61,7 +61,7 @@ public class ProviderResultsActivity extends AppCompatActivity {
 
         findProviders();
 
-
+        filterProviders();
 
 
 
@@ -76,7 +76,10 @@ public class ProviderResultsActivity extends AppCompatActivity {
         query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                
+                for (DocumentSnapshot snapshot: queryDocumentSnapshots.getDocuments())
+                {
+                    Log.v("filterTest", snapshot.getString("name"));
+                }
             }
         });
     }

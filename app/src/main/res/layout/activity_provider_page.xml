@@ -64,7 +64,7 @@
 
             android:id="@+id/priceListDetails"
             android:layout_width="0dp"
-            android:layout_height="230dp"
+            android:layout_height="228dp"
             android:layout_marginStart="2dp"
             android:layout_marginEnd="2dp"
             app:layout_constraintEnd_toEndOf="parent"

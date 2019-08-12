@@ -3,6 +3,7 @@ package com.business.quickcare;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Spinner;
 
@@ -22,6 +23,7 @@ import org.imperiumlabs.geofirestore.GeoFirestore;
 import org.imperiumlabs.geofirestore.GeoQuery;
 import org.imperiumlabs.geofirestore.listeners.GeoQueryDataEventListener;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class ProviderResultsActivity extends AppCompatActivity {
@@ -34,7 +36,10 @@ public class ProviderResultsActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private CollectionReference collectionReference;
     private String[] coordinates = new String[2];
-
+    private String insuranceChoice;
+    private String providerChoice;
+    private Spinner providerSpinner;
+    private Spinner insuranceSpinner;
     int radius = 8;
 
     @Override
@@ -46,8 +51,12 @@ public class ProviderResultsActivity extends AppCompatActivity {
         Button goButton = findViewById(R.id.filterButton);
 
 
-        Spinner providerSpinner = findViewById(R.id.providerSpinner);
-        Spinner insuranceSpinner = findViewById(R.id.insuranceSpinner);
+        providerSpinner = findViewById(R.id.providerSpinner);
+        insuranceSpinner = findViewById(R.id.insuranceSpinner);
+
+
+
+
 
 
         goButton.setOnClickListener(new Button.OnClickListener() {
@@ -60,33 +69,26 @@ public class ProviderResultsActivity extends AppCompatActivity {
 
         findProviders();
 
-        filterProviders();
 
 
     }
 
 
-    public void filterProviders()
+    public void filterProviders(ArrayList<DocumentSnapshot> snapshots)
     {
-        query = collectionReference.whereArrayContains("insuranceproviders", "Aetna");
-        query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                for (DocumentSnapshot snapshot: queryDocumentSnapshots.getDocuments())
-                {
-                    Log.v("filterTest", snapshot.getId() + " " + snapshot.getString("name"));
-                }
-            }
-        });
+        insuranceChoice = insuranceSpinner.getSelectedItem().toString();
+        //Don't want to check the document snapshot for the term any insurance because it well never contain this string..
+        if (insuranceChoice.contains("Any insurance"))
+        {
+            insuranceChoice = "";
+        }
+
+        for (DocumentSnapshot snapshot: snapshots)
+        {
+//            if (snapshot.toString().contains(providerSpinner.getSelectedItem().toString()))
 
 
-
-
-
-
-
-
-
+        }
 
 
 
@@ -119,16 +121,18 @@ public class ProviderResultsActivity extends AppCompatActivity {
         geoFirestore = new GeoFirestore(collectionReference);
         geoQuery = geoFirestore.queryAtLocation(new GeoPoint(lat, lng), radius);
 
+        ArrayList<DocumentSnapshot> documentSnapshots = new ArrayList<>();
+
         geoQuery.addGeoQueryDataEventListener(new GeoQueryDataEventListener() {
             @Override
             public void onDocumentEntered(DocumentSnapshot doc, GeoPoint geoPoint) {
                 Log.v("GeoFire", "Key Entered");
                 Log.v("GeoFire", doc.getId() + geoPoint.toString());
 
-
+                documentSnapshots.add(doc);
                 Log.v("GeoFire", doc.toString());
 
-                listOfProviders.add(new QuickCareProvider(doc.getString("name"), doc.getString("address"), doc.getString("rating"), doc.getId(), geoPoint));
+                listOfProviders.add(new QuickCareProvider(doc.getString("name"), doc.getString("address"), doc.getString("rating"), doc.getId(), geoPoint, Integer.valueOf(doc.getString("priceskew"))));
             }
 
             @Override

@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,20 +28,19 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         // each data item is just a string in this case
 
 
-        public CardView cardView;
-        public TextView providerName;
-        public TextView ratingText;
-        public TextView location;
+        CardView cardView;
+        TextView providerName;
+        TextView location;
+        ImageView priceImage;
+        View view;
 
-        public View view;
-
-        public MyViewHolder(View v, CardView cardView1, TextView providerName1, TextView ratingText1, TextView location1) {
+        MyViewHolder(View v, CardView cardView1, TextView providerName1, TextView location1, ImageView priceImage1) {
             super(v);
             view = v;
             cardView = cardView1;
             providerName = providerName1;
-            ratingText = ratingText1;
             location = location1;
+            priceImage = priceImage1;
 
         }
     }
@@ -62,10 +62,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
         CardView cardview = v.findViewById(R.id.providerCardView);
         TextView providerName = v.findViewById(R.id.providerName);
-        TextView rating = v.findViewById(R.id.rating);
         TextView location = v.findViewById(R.id.location);
-
-        MyViewHolder vh = new MyViewHolder(v, cardview, providerName, rating, location);
+        ImageView priceImage = v.findViewById(R.id.priceImage);
+        MyViewHolder vh = new MyViewHolder(v, cardview, providerName, location, priceImage);
         return vh;
     }
 
@@ -77,9 +76,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
         Log.v("onBindViewHolder Test", providerDataSet.get(position).getName());
         holder.providerName.setText(providerDataSet.get(position).getName());
-        holder.ratingText.setText(providerDataSet.get(position).getRating());
         holder.location.setText(providerDataSet.get(position).getLocation());
-
+        int priceSkew = providerDataSet.get(position).getPrice();
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override

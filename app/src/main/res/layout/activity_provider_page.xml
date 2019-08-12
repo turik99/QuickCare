@@ -21,18 +21,6 @@
 
 
         <TextView
-            android:id="@+id/priceSummary"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="💲💲💲"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/practiceSummaryDetails" />
-
-
-        <TextView
             android:id="@+id/providerDetailsName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -48,29 +36,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/arbitraryid" />
 
-        <TextView
-            android:id="@+id/ratingDetailsText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="⭐⭐⭐⭐"
-            android:textSize="18sp"
-            app:layout_constraintStart_toEndOf="@+id/priceSummary"
-            app:layout_constraintTop_toBottomOf="@+id/practiceSummaryDetails" />
-
 
         <androidx.recyclerview.widget.RecyclerView
 
+            android:nestedScrollingEnabled="false"
             android:id="@+id/priceListDetails"
             android:layout_width="0dp"
-            android:layout_height="228dp"
+            android:layout_height="148dp"
             android:layout_marginStart="2dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="2dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+            app:layout_constraintTop_toBottomOf="@+id/pagePriceImage" />
 
         <TextView
             android:id="@+id/practiceSummaryDetails"
@@ -140,32 +119,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 
-        <androidx.appcompat.widget.SearchView
-            android:clickable="true"
-            android:onClick="searchViewClicked"
-            android:focusable="true"
-            android:background="#E1F5FE"
-            android:queryHint="Search for procedures"
-            android:id="@+id/searchProcedures"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/priceSummary" />
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="search for a procedure."
-            android:textStyle="italic"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/searchProcedures" />
-
         <Button
             android:id="@+id/expandDRGList"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -178,6 +131,27 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/priceListDetails" />
+
+        <ImageView
+            android:id="@+id/pagePriceImage"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/practiceSummaryDetails"
+            app:srcCompat="@drawable/cash_cheap" />
+
+        <TextView
+            android:id="@+id/pagepricingsummary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="This providers services are cheaper than average. "
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/pagePriceImage"
+            app:layout_constraintTop_toBottomOf="@+id/practiceSummaryDetails" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

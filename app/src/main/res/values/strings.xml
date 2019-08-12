@@ -4,10 +4,14 @@
 
     <string-array name="Insurance">
         <item>Any Insurance</item>
+        <item>UnitedHealth</item>
+        <item>Anthem</item>
         <item>Aetna</item>
         <item>Cigna</item>
         <item>Humana</item>
-        <item>United Health</item>
+        <item>Centene</item>
+        <item>Molina Healthcare</item>
+        <item>WellCare</item>
     </string-array>
     <string-array name="rating">
         <item>⭐ and up</item>

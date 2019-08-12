@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -44,8 +45,8 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
     TextView providerDetailsName;
     TextView providerDetailsAddress;
     TextView practiceSummaryDetails;
-    TextView ratingDetailsText;
     TextView pricingSummary;
+    ImageView priceSkewImage;
     Button getDirButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,17 +61,15 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
         providerDetailsName = findViewById(R.id.providerDetailsName);
         providerDetailsAddress = findViewById(R.id.providerDetailsAddress);
         practiceSummaryDetails = findViewById(R.id.practiceSummaryDetails);
-        ratingDetailsText = findViewById(R.id.ratingDetailsText);
-        pricingSummary = findViewById(R.id.priceSummary);
+        pricingSummary = findViewById(R.id.pagepricingsummary);
         getDirButton = findViewById(R.id.getDirectionsButton);
+        priceSkewImage = findViewById(R.id.pagePriceImage);
 
 
 
         mapView = findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
-
-        searchView = findViewById(R.id.searchProcedures);
 
         //This keeps the keyboard from showing up when that searchbar is set to 'open'
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
@@ -102,11 +101,28 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
 //                        toolbar.setTitle("");
                         Log.d("HP Page Firebase", "DocumentSnapshot data: " + document.getData());
                         providerDetailsName.setText(document.getString("name"));
-                        ratingDetailsText.setText(document.getString("rating"));
                         String address = document.getString("address");
                         providerDetailsAddress.setText(address);
                         practiceSummaryDetails.setText(document.getString("summary"));
                         int priceskew = Integer.valueOf(document.getString("priceskew"));
+
+                        switch (priceskew){
+                            case 0:
+                                pricingSummary.setText("This provider's services are cheaper than average");
+                                priceSkewImage.setImageDrawable(getDrawable(R.drawable.cash_cheap));
+                                break;
+                            case 1:
+                                pricingSummary.setText("This provider's services are about average");
+                                priceSkewImage.setImageDrawable(getDrawable(R.drawable.cash_medium));
+                                break;
+                            case 2:
+                                pricingSummary.setText("This provider's services are more expensive than average");
+                                priceSkewImage.setImageDrawable(getDrawable(R.drawable.cash_expensive));
+                                break;
+
+
+                        }
+
 
                         mapView.onStart();
                         GeoCoder geoCoder = new GeoCoder(getApplicationContext(), address, map, getDirButton, db, docRef);
@@ -138,7 +154,6 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
                 //                        HashMap<String, Object> drgMap = (HashMap<String, Object>) document.get("pricelist");
                 ArrayList<DRGItem> drgItems = new ArrayList<>();
                 pricesRecycler = findViewById(R.id.priceListDetails);
-                pricesRecycler.setNestedScrollingEnabled(false);
 
                 for (DocumentSnapshot doc: task.getResult().getDocuments())
                 {
@@ -152,6 +167,8 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
                 // use a linear layout manager
                 layoutManager = new LinearLayoutManager(getApplicationContext());
                 pricesRecycler.setLayoutManager(layoutManager);
+                pricesRecycler.setNestedScrollingEnabled(false);
+                pricesRecycler.setLayoutFrozen(true);
 
                 DRGItemAdapter drgItemAdapter = new DRGItemAdapter(ProviderPageActivity.this, drgItems);
                 pricesRecycler.setAdapter(drgItemAdapter);

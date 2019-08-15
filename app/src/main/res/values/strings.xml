@@ -18,6 +18,7 @@
         <item>20 miles</item>
         <item>50 miles</item>
         <item>100 miles</item>
+        <item>5000 miles</item>
     </string-array>
 
     <string-array name="typeofcare">

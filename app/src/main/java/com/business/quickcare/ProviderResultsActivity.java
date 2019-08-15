@@ -20,6 +20,7 @@ import org.imperiumlabs.geofirestore.GeoFirestore;
 import org.imperiumlabs.geofirestore.GeoQuery;
 import org.imperiumlabs.geofirestore.listeners.GeoQueryDataEventListener;
 
+import java.security.Provider;
 import java.util.ArrayList;
 
 public class ProviderResultsActivity extends AppCompatActivity {
@@ -32,12 +33,10 @@ public class ProviderResultsActivity extends AppCompatActivity {
     private CollectionReference collectionReference;
     private String[] coordinates = new String[2];
     private String insuranceChoice;
-    private String providerChoice;
     private String distanceChoice;
-    private Spinner providerSpinner;
     private Spinner insuranceSpinner;
     private Spinner distancesSpinner;
-    private ArrayList<QuickCareProvider> providerList;
+    private ArrayList<QuickCareProvider> finalProviderData;
     int radius;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +47,6 @@ public class ProviderResultsActivity extends AppCompatActivity {
         Button goButton = findViewById(R.id.filterButton);
 
 
-        providerSpinner = findViewById(R.id.providerSpinner);
         insuranceSpinner = findViewById(R.id.insuranceSpinner);
         distancesSpinner = findViewById(R.id.distancesSpinner);
 
@@ -74,20 +72,16 @@ public class ProviderResultsActivity extends AppCompatActivity {
     public ArrayList<QuickCareProvider> filterProviders(ArrayList<DocumentSnapshot> snapshots)
     {
         insuranceChoice = insuranceSpinner.getSelectedItem().toString();
-        providerChoice = providerSpinner.getSelectedItem().toString();
 
 
 
         ArrayList<QuickCareProvider> filterProvidersList = new ArrayList<>();
         //Don't want to check the document snapshot for the term any insurance because it well never contain this string..
-        if (insuranceChoice.contains("Any insurance"))
+        if (insuranceChoice.contains("Any "))
         {
             insuranceChoice = "";
         }
-        if (providerChoice.contains("Any type"))
-        {
-            providerChoice = "";
-        }
+
 
 
         for (DocumentSnapshot snapshot: snapshots)
@@ -95,9 +89,10 @@ public class ProviderResultsActivity extends AppCompatActivity {
             String dataString = snapshot.toString();
             //This part checks to see if a string version of the document referenced contains BOTH
             //the name of the provider and the insurance choice.
-            Log.v("Filter params", "provider choice " + providerChoice + " " + "insurance choice " + insuranceChoice);
-            if (dataString.contains(providerChoice) && dataString.contains(insuranceChoice))
+            Log.v("Filter params", "insurance choice " + insuranceChoice);
+            if (dataString.contains(insuranceChoice))
             {
+                Log.v("Snapshot Array Filter", "added " + snapshot.getString("name"));
                 filterProvidersList.add(new QuickCareProvider(snapshot.getString("name"),
                         snapshot.getString("address"),
                         snapshot.getId(),
@@ -133,7 +128,6 @@ public class ProviderResultsActivity extends AppCompatActivity {
         //This is instantiating an arraylist of the quick care provider class, see that class for details on what data is stored here.
 
 
-        ArrayList<QuickCareProvider> listOfProviders = new ArrayList<>();
 
 
         db = FirebaseFirestore.getInstance();
@@ -192,7 +186,8 @@ public class ProviderResultsActivity extends AppCompatActivity {
                 {
 
                     //Use the filter to filter through the list of documentsnaps we acquired by geolocation.
-                    providerList = filterProviders(documentSnapshots);
+                    finalProviderData = filterProviders(documentSnapshots);
+                    Log.v("final providerlist", "size " + finalProviderData.size());
                     //Instantiating a recyclerview, which is really a list view. The following code is mostly
                     //boiler plate from the Android Developers website.
                     RecyclerView providerList = findViewById(R.id.providerList);
@@ -206,7 +201,7 @@ public class ProviderResultsActivity extends AppCompatActivity {
                     providerList.setLayoutManager(layoutManager);
 
                     // specify an adapter (see also next example)
-                    mAdapter = new MyAdapter(listOfProviders, ProviderResultsActivity.this);
+                    mAdapter = new MyAdapter(finalProviderData, ProviderResultsActivity.this);
                     providerList.setAdapter(mAdapter);
                 }
 

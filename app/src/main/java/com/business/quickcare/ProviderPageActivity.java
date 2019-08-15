@@ -125,7 +125,8 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
 
                         mapView.onStart();
 
-                        GeoPoint geoPoint = document.getGeoPoint("position");
+                        //Don't know why but GeoPoints come under the reference string 'l'
+                        GeoPoint geoPoint = document.getGeoPoint("l");
 
                         double lat = geoPoint.getLatitude();
                         double lng = geoPoint.getLongitude ();

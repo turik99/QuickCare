@@ -3,7 +3,6 @@ package com.business.quickcare;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Spinner;
 
@@ -11,19 +10,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import org.imperiumlabs.geofirestore.GeoFirestore;
 import org.imperiumlabs.geofirestore.GeoQuery;
 import org.imperiumlabs.geofirestore.listeners.GeoQueryDataEventListener;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class ProviderResultsActivity extends AppCompatActivity {
@@ -32,16 +28,17 @@ public class ProviderResultsActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private GeoFirestore geoFirestore;
     private GeoQuery geoQuery;
-    private Query query;
     private FirebaseFirestore db;
     private CollectionReference collectionReference;
     private String[] coordinates = new String[2];
     private String insuranceChoice;
     private String providerChoice;
+    private String distanceChoice;
     private Spinner providerSpinner;
     private Spinner insuranceSpinner;
-    int radius = 8;
-
+    private Spinner distancesSpinner;
+    private ArrayList<QuickCareProvider> providerList;
+    int radius;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +50,7 @@ public class ProviderResultsActivity extends AppCompatActivity {
 
         providerSpinner = findViewById(R.id.providerSpinner);
         insuranceSpinner = findViewById(R.id.insuranceSpinner);
-
+        distancesSpinner = findViewById(R.id.distancesSpinner);
 
 
 
@@ -62,11 +59,11 @@ public class ProviderResultsActivity extends AppCompatActivity {
         goButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                findProviders();
             }
         });
-        coordinates = getIntent().getStringArrayExtra("coordinates");
 
+        coordinates = getIntent().getStringArrayExtra("coordinates");
         findProviders();
 
 
@@ -74,22 +71,47 @@ public class ProviderResultsActivity extends AppCompatActivity {
     }
 
 
-    public void filterProviders(ArrayList<DocumentSnapshot> snapshots)
+    public ArrayList<QuickCareProvider> filterProviders(ArrayList<DocumentSnapshot> snapshots)
     {
         insuranceChoice = insuranceSpinner.getSelectedItem().toString();
+        providerChoice = providerSpinner.getSelectedItem().toString();
+
+
+
+        ArrayList<QuickCareProvider> filterProvidersList = new ArrayList<>();
         //Don't want to check the document snapshot for the term any insurance because it well never contain this string..
         if (insuranceChoice.contains("Any insurance"))
         {
             insuranceChoice = "";
         }
+        if (providerChoice.contains("Any type"))
+        {
+            providerChoice = "";
+        }
+
 
         for (DocumentSnapshot snapshot: snapshots)
         {
-//            if (snapshot.toString().contains(providerSpinner.getSelectedItem().toString()))
+            String dataString = snapshot.toString();
+            //This part checks to see if a string version of the document referenced contains BOTH
+            //the name of the provider and the insurance choice.
+            Log.v("Filter params", "provider choice " + providerChoice + " " + "insurance choice " + insuranceChoice);
+            if (dataString.contains(providerChoice) && dataString.contains(insuranceChoice))
+            {
+                filterProvidersList.add(new QuickCareProvider(snapshot.getString("name"),
+                        snapshot.getString("address"),
+                        snapshot.getId(),
+                        snapshot.getGeoPoint("l"), Integer.valueOf(snapshot.getString("priceskew"))));
 
+            }
+            else
+            {
+                Log.v("filter test", "snapshot " + snapshot.getString("name") + " filters out" );
+
+            }
 
         }
-
+        return filterProvidersList;
 
 
     }
@@ -111,11 +133,18 @@ public class ProviderResultsActivity extends AppCompatActivity {
         //This is instantiating an arraylist of the quick care provider class, see that class for details on what data is stored here.
 
 
-        final ArrayList<QuickCareProvider> listOfProviders = new ArrayList<>();
+        ArrayList<QuickCareProvider> listOfProviders = new ArrayList<>();
 
 
         db = FirebaseFirestore.getInstance();
         collectionReference = db.collection("healthcareproviders");
+
+
+        distanceChoice = distancesSpinner.getSelectedItem().toString();
+        int distancemiles = Integer.valueOf(distanceChoice.substring(0, distanceChoice.indexOf(" ")));
+        Log.v("I hate programming", distanceChoice.substring(0, distanceChoice.indexOf(" ")));
+        radius = (int) milesToKilometers(distancemiles);
+
 
 
         geoFirestore = new GeoFirestore(collectionReference);
@@ -132,7 +161,6 @@ public class ProviderResultsActivity extends AppCompatActivity {
                 documentSnapshots.add(doc);
                 Log.v("GeoFire", doc.toString());
 
-                listOfProviders.add(new QuickCareProvider(doc.getString("name"), doc.getString("address"), doc.getString("rating"), doc.getId(), geoPoint, Integer.valueOf(doc.getString("priceskew"))));
             }
 
             @Override
@@ -155,13 +183,16 @@ public class ProviderResultsActivity extends AppCompatActivity {
 
                 Log.v("GeoFire", "Query Ready");
 
-                if (listOfProviders.size()==0)
+                if (documentSnapshots.size() == 0)
                 {
                     radius++;
                     findProviders();
                 }
                 else
                 {
+
+                    //Use the filter to filter through the list of documentsnaps we acquired by geolocation.
+                    providerList = filterProviders(documentSnapshots);
                     //Instantiating a recyclerview, which is really a list view. The following code is mostly
                     //boiler plate from the Android Developers website.
                     RecyclerView providerList = findViewById(R.id.providerList);
@@ -186,6 +217,15 @@ public class ProviderResultsActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public double kilometersToMiles(int kilometers)
+    {
+        return kilometers * 0.621371;
+    }
+    public double milesToKilometers(int miles)
+    {
+        return miles * 1.60934;
     }
 
 }

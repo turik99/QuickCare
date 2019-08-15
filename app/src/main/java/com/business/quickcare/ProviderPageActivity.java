@@ -1,5 +1,7 @@
 package com.business.quickcare;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,9 +16,12 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -25,6 +30,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -40,7 +46,6 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
     private RecyclerView.LayoutManager layoutManager;
     private SearchView searchView;
     private DocumentReference docRef;
-    private CollectionReference prices;
     private RecyclerView pricesRecycler;
     TextView providerDetailsName;
     TextView providerDetailsAddress;
@@ -57,15 +62,12 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
 
         this.documentId = getIntent().getStringExtra("documentId");
 
-
         providerDetailsName = findViewById(R.id.providerDetailsName);
         providerDetailsAddress = findViewById(R.id.providerDetailsAddress);
         practiceSummaryDetails = findViewById(R.id.practiceSummaryDetails);
         pricingSummary = findViewById(R.id.pagepricingsummary);
         getDirButton = findViewById(R.id.getDirectionsButton);
         priceSkewImage = findViewById(R.id.pagePriceImage);
-
-
 
         mapView = findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
@@ -75,9 +77,6 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         getDocumentInfo();
-
-
-
 
 
     }
@@ -125,8 +124,38 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
 
 
                         mapView.onStart();
-                        GeoCoder geoCoder = new GeoCoder(getApplicationContext(), address, map, getDirButton, db, docRef);
-                        geoCoder.execute();
+
+                        GeoPoint geoPoint = document.getGeoPoint("position");
+
+                        double lat = geoPoint.getLatitude();
+                        double lng = geoPoint.getLongitude ();
+                        LatLng latLng = new LatLng(lat, lng);
+
+                        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                        map.animateCamera(CameraUpdateFactory.zoomTo(16), 2000, null);
+                        map.addMarker(new MarkerOptions().position(latLng));
+
+
+
+                        getDirButton.setOnClickListener(new Button.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                // Create a Uri from an intent string. Use the result to create an Intent.
+                                Uri gmmIntentUri = Uri.parse("http://maps.google.com/maps?daddr=" + latLng.latitude + "," + latLng.longitude + "Hospital");
+
+                                // Create an Intent from gmmIntentUri. Set the action to ACTION_VIEW
+                                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                                // Make the Intent explicit by setting the Google Maps package
+                                mapIntent.setPackage("com.google.android.apps.maps");
+                                mapIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                // Attempt to start an activity that can handle the Intent
+
+
+                                getBaseContext().startActivity(mapIntent);
+
+                            }
+                        });
+
 
 
 
@@ -147,7 +176,7 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
 
     public void getPrices()
     {
-        prices = docRef.collection("prices");
+        CollectionReference prices = docRef.collection("prices");
         prices.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -204,7 +233,8 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(GoogleMap googleMap)
+    {
         map = googleMap;
 
 

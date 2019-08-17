@@ -29,4 +29,7 @@
     </string-array>
     <string name="title_activity_provider_page">ProviderPageActivity</string>
     <string name="api_key">AIzaSyA9Umf_Zl8CVsC51qtzwdtOyuu62PmgBUo</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

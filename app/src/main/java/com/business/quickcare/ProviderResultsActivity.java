@@ -14,13 +14,11 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
-import com.google.firebase.firestore.Query;
 
 import org.imperiumlabs.geofirestore.GeoFirestore;
 import org.imperiumlabs.geofirestore.GeoQuery;
 import org.imperiumlabs.geofirestore.listeners.GeoQueryDataEventListener;
 
-import java.security.Provider;
 import java.util.ArrayList;
 
 public class ProviderResultsActivity extends AppCompatActivity {
@@ -201,7 +199,7 @@ public class ProviderResultsActivity extends AppCompatActivity {
                     providerList.setLayoutManager(layoutManager);
 
                     // specify an adapter (see also next example)
-                    mAdapter = new MyAdapter(finalProviderData, ProviderResultsActivity.this);
+                    mAdapter = new ProviderAdapter(finalProviderData, ProviderResultsActivity.this);
                     providerList.setAdapter(mAdapter);
                 }
 

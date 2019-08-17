@@ -77,11 +77,12 @@ public class DRGItemAdapter extends RecyclerView.Adapter<DRGItemAdapter.DRGViewH
 
     @Override
     public int getItemCount() {
+            if (drgItems.size()<2)
+                return drgItems.size();
+            else
+                return 2;
 
-        if (drgItems.size()<2)
-            return drgItems.size();
-        else
-            return 2;
+
     }
 
 

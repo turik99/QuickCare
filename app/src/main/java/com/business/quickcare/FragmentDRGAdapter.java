@@ -1,6 +1,7 @@
 package com.business.quickcare;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,6 +77,7 @@ public static class DRGViewHolder extends RecyclerView.ViewHolder {
 
     @Override
     public int getItemCount() {
+        Log.v("DRGFRAG size", "Size=" + drgItems.size());
         return drgItems.size();
 
 

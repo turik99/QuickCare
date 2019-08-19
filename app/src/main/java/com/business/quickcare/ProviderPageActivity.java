@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,7 +38,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ProviderPageActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class ProviderPageActivity extends AppCompatActivity implements OnMapReadyCallback, PriceListFragment.OnFragmentInteractionListener {
 
     private String documentId;
     GoogleMap map;
@@ -53,6 +54,7 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
     TextView pricingSummary;
     ImageView priceSkewImage;
     Button getDirButton;
+    Button fullListButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +70,9 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
         pricingSummary = findViewById(R.id.pagepricingsummary);
         getDirButton = findViewById(R.id.getDirectionsButton);
         priceSkewImage = findViewById(R.id.pagePriceImage);
+        fullListButton = findViewById(R.id.expandDRGList);
+
+
 
         mapView = findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
@@ -182,7 +187,7 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 //                        HashMap<String, Object> drgMap = (HashMap<String, Object>) document.get("pricelist");
-                ArrayList<DRGItem> drgItems = new ArrayList<>();
+                ArrayList<DRGItem> drgItems = new ArrayList<DRGItem>();
                 pricesRecycler = findViewById(R.id.priceListDetails);
 
                 for (DocumentSnapshot doc: task.getResult().getDocuments())
@@ -203,8 +208,26 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
                 DRGItemAdapter drgItemAdapter = new DRGItemAdapter(ProviderPageActivity.this, drgItems);
                 pricesRecycler.setAdapter(drgItemAdapter);
 
+                fullListButton.setOnClickListener(new Button.OnClickListener() {
 
-                addStuff();
+                    @Override
+                    public void onClick(View view) {
+                        String[] strings = new String[drgItems.size()];
+                        for (int i = 0; i<drgItems.size(); i++){
+                            strings[i] = drgItems.get(i).toString();
+                        }
+
+                        Bundle bundle = new Bundle();
+                        bundle.putStringArray("string_arg", strings);
+
+
+                        PriceListFragment fragment = new PriceListFragment();
+                        fragment.setArguments(bundle);
+                        fragment.show(getSupportFragmentManager(), "DRGList");
+                    }
+                });
+
+//                addStuff();
 
             }
         });
@@ -266,4 +289,8 @@ public class ProviderPageActivity extends AppCompatActivity implements OnMapRead
     }
 
 
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
 }

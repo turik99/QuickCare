@@ -1,5 +1,7 @@
 package com.business.quickcare;
 
+import androidx.annotation.NonNull;
+
 public class DRGItem {
     private String drgCode;
     private String name;
@@ -28,6 +30,11 @@ public class DRGItem {
         return costSkew;
     }
 
+    @NonNull
+    public String toString()
+    {
+        return this.drgCode + "_" + this.name + "_" + this.price + "_" + this.costSkew;
+    }
 
 
 }

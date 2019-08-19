@@ -43,14 +43,8 @@ public class ProviderResultsActivity extends AppCompatActivity {
 
 
         Button goButton = findViewById(R.id.filterButton);
-
-
         insuranceSpinner = findViewById(R.id.insuranceSpinner);
         distancesSpinner = findViewById(R.id.distancesSpinner);
-
-
-
-
 
         goButton.setOnClickListener(new Button.OnClickListener() {
             @Override

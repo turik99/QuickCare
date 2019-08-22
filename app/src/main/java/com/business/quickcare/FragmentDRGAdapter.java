@@ -13,6 +13,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FragmentDRGAdapter extends RecyclerView.Adapter<FragmentDRGAdapter.DRGViewHolder> {
 
@@ -79,9 +80,13 @@ public static class DRGViewHolder extends RecyclerView.ViewHolder {
     public int getItemCount() {
         Log.v("DRGFRAG size", "Size=" + drgItems.size());
         return drgItems.size();
-
-
     }
+
+    // set adapter filtered list
+    public void setList(ArrayList<DRGItem> list) {
+        this.drgItems = list;
+    }
+
 
 
 

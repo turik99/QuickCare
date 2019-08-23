@@ -5,7 +5,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,16 +16,18 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-public class FragmentDRGAdapter extends RecyclerView.Adapter<FragmentDRGAdapter.DRGViewHolder> {
+public class FragmentDRGAdapter extends RecyclerView.Adapter<FragmentDRGAdapter.DRGViewHolder> implements Filterable {
 
 
 private Context context;
 private ArrayList<DRGItem> drgItems;
+private ArrayList<DRGItem> drgItemsFull;
 
 
-public static class DRGViewHolder extends RecyclerView.ViewHolder {
+    public static class DRGViewHolder extends RecyclerView.ViewHolder {
     // each data item is just a string in this case
 
 
@@ -31,6 +36,7 @@ public static class DRGViewHolder extends RecyclerView.ViewHolder {
     private TextView priceSkew;
     private ImageView priceImage;
     private TextView price;
+
 
     public View view;
 
@@ -42,14 +48,13 @@ public static class DRGViewHolder extends RecyclerView.ViewHolder {
         this.priceSkew = priceSkew;
         this.priceImage = priceImage;
         this.price = price;
-
-
     }
 }
 
     public FragmentDRGAdapter(Context ctx, ArrayList<DRGItem> drgItems) {
         this.context = ctx;
         this.drgItems = drgItems;
+        this.drgItemsFull = new ArrayList<DRGItem>(drgItems);
     }
 
     @NonNull
@@ -62,6 +67,11 @@ public static class DRGViewHolder extends RecyclerView.ViewHolder {
         TextView priceSkew = view.findViewById(R.id.procedurepricemessage);
         ImageView priceImage = view.findViewById(R.id.priceImage);
         TextView price = view.findViewById(R.id.procedureCost);
+
+
+
+
+
 
 
         FragmentDRGAdapter.DRGViewHolder drgViewHolder = new FragmentDRGAdapter.DRGViewHolder(view, cardView, name, priceSkew, priceImage, price);
@@ -89,7 +99,43 @@ public static class DRGViewHolder extends RecyclerView.ViewHolder {
 
 
 
+    @Override
+    public Filter getFilter() {
+        return drgFilter;
+    }
 
+    private Filter drgFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            ArrayList<DRGItem> filteredList = new ArrayList<>();
+            if (constraint == null || constraint.length() == 0) {
+                 filteredList.addAll(drgItemsFull);
 
+            }
+            else{
+                String filterPattern = constraint.toString().toLowerCase();
+                Log.v("filter constraint", filterPattern);
+
+                for (DRGItem item : drgItemsFull) {
+                    Log.v("Filter itmes loop", item.getName());
+                    
+                    if (item.getName().contains(filterPattern) || item.getDrgCode().contains(filterPattern)){
+                        filteredList.add(item);
+
+                    }
+                }
+            }
+            FilterResults filterResults = new FilterResults();
+            filterResults.values = filteredList;
+            return filterResults;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            drgItems.clear();
+            drgItems.addAll((ArrayList) filterResults.values);
+            notifyDataSetChanged();
+        }
+    };
 
 }

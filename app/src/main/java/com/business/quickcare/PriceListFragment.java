@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.SearchView;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -68,13 +70,37 @@ public class PriceListFragment extends DialogFragment {
 
         list = getProcedures(strings);
 
+        FragmentDRGAdapter drgAdapter = new FragmentDRGAdapter(getContext(), list);
+
+
 
         View view = inflater.inflate(R.layout.fragment_price_list, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.fragmentPriceRecycler);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(new FragmentDRGAdapter(getContext(), list));
+        recyclerView.setAdapter(drgAdapter);
+
+        SearchView searchView = view.findViewById(R.id.fragmentPriceSearch);
+        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                //klas;djfkl;asdjf;l
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                drgAdapter.getFilter().filter(s);
+
+                return false;
+            }
+        });
+
+
+
 
         return view;
     }

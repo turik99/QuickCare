@@ -118,7 +118,7 @@ private ArrayList<DRGItem> drgItemsFull;
 
                 for (DRGItem item : drgItemsFull) {
                     Log.v("Filter itmes loop", item.getName());
-                    
+
                     if (item.getName().contains(filterPattern) || item.getDrgCode().contains(filterPattern)){
                         filteredList.add(item);
 

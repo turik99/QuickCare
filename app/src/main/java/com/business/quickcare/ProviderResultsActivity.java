@@ -55,9 +55,6 @@ public class ProviderResultsActivity extends AppCompatActivity {
 
         coordinates = getIntent().getStringArrayExtra("coordinates");
         findProviders();
-
-
-
     }
 
 
@@ -106,22 +103,11 @@ public class ProviderResultsActivity extends AppCompatActivity {
 
     public void findProviders()
     {
-
-
-
         double lat = Double.valueOf(coordinates[0]);
         double lng = Double.valueOf(coordinates[1]);
 
-
-
         Log.v("IntentExtra", coordinates[0] + coordinates[1]);
-
-
         //This is instantiating an arraylist of the quick care provider class, see that class for details on what data is stored here.
-
-
-
-
         db = FirebaseFirestore.getInstance();
         collectionReference = db.collection("healthcareproviders");
 
@@ -146,9 +132,7 @@ public class ProviderResultsActivity extends AppCompatActivity {
 
                 documentSnapshots.add(doc);
                 Log.v("GeoFire", doc.toString());
-
             }
-
             @Override
             public void onDocumentExited(DocumentSnapshot documentSnapshot) {
 

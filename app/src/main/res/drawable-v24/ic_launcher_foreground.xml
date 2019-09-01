@@ -11,15 +11,14 @@
         android:pivotY="29">
         <path
             android:pathData="M19.34,17.12l0,-3.57l0,-6.1l-9.67,0l0,9.62l-9.66,0l0,9.67l9.66,0l0,0.05l0,9.67l9.67,0l0,-9.67l9.67,0l0,-9.67l-9.67,0z"
-            android:strokeAlpha="0.6"
-            android:fillColor="#00ff00"
-            android:fillAlpha="0.4"/>
+            android:fillColor="#69f0ae"/>
         <path
             android:pathData="M31.83,21.55l0,-9.67l-9.67,0l0,9.62l-9.67,0l0,9.67l9.67,0l0,0.05l0,9.67l9.67,0l0,-9.67l9.67,0l0,-9.67l-9.67,0z"
-            android:fillColor="#00e600"/>
+            android:fillColor="#64b5f6"/>
         <path
             android:pathData="M44.33,26.11l0,-9.67l-9.67,0l0,9.67l-9.67,0l0,9.67l9.67,0l0,9.67l9.67,0l0,-9.67l9.67,0l0,-9.67l-9.67,0z"
-            android:fillColor="#29a0e2"/>
+            android:fillColor="#1976d2"/>
+
 
     </group>
 

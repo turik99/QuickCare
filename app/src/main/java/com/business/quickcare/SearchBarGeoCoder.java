@@ -10,8 +10,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 
-import java.io.IOException;
-
 public class SearchBarGeoCoder extends AsyncTask<String, String, String> {
     Location location;
     AutocompleteSupportFragment fragment;

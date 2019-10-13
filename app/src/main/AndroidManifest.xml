@@ -13,7 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity android:name=".DataEntryActivity"></activity>
         <activity
             android:name=".ProviderPageActivity"
             android:label="@string/title_activity_provider_page"
@@ -43,9 +43,9 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:scheme="http"
                     android:host="reddit.com"
-                    android:pathPattern="/link" />
+                    android:pathPattern="/link"
+                    android:scheme="http" />
             </intent-filter>
         </activity>
 
@@ -53,4 +53,5 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyA9Umf_Zl8CVsC51qtzwdtOyuu62PmgBUo" />
     </application>
+
 </manifest>

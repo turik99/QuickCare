@@ -6,8 +6,10 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -50,6 +52,21 @@ public class MainActivity extends AppCompatActivity {
         if (!Places.isInitialized()) {
             Places.initialize(getApplicationContext(), getString(R.string.api_key), Locale.US);
         }
+
+        String androidId = Settings.Secure.getString(getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+
+        Log.v("Android Device ID", androidId);
+        Button openDataEntry = findViewById(R.id.openDataEntry);
+        if (androidId.equals("10132218e32d1f41"))
+            openDataEntry.setVisibility(View.VISIBLE);
+            openDataEntry.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(MainActivity.this, DataEntryActivity.class);
+                    startActivity(intent);
+                }
+            });
 
 
         this.sharedPreferences = getSharedPreferences("preferences", MODE_PRIVATE);
